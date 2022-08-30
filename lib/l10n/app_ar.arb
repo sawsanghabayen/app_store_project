@@ -1,0 +1,20 @@
+{
+"login_title":"مرحبا بك مجددا",
+"login_sub_title":"ادخل البريد وكلمة المرور",
+"login":"تسجيل الدخول",
+"email":"البريد الالكتروني",
+"password":"كلمة المرور",
+"confirm_logout":"تأكيد تسجيل الخروج",
+"content":"هل أنت متأكد؟",
+"confirm": "تأكيد",
+"cancel": "الغاء",
+"language_title": "تغيير اللغة",
+"language_sub_title": "اختر اللغة المناسبة",
+"register":"انشاء حساب",
+"register_title": "انشاء حساب جديد",
+"register_sub_title": "أدخل البيانات ادناه",
+"name":"الاسم",
+"new_account_message":"ليس لديك حساب؟",
+"create_account":"أنشئ الان"
+
+}

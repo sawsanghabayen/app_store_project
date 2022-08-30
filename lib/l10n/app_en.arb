@@ -1,0 +1,24 @@
+{
+"login_title": "Welcome back...",
+"login_sub_title": "Enter Email & Password",
+"login": "Login",
+"email": "Email",
+"password": "Password",
+"confirm_logout": "Confirm Logout",
+"content": "Are You Sure?",
+"confirm": "Confirm",
+"cancel": "Cancel",
+"language_title": "Change Language",
+"language_sub_title": "Choose Suitable Title",
+"register":"Register",
+"register_title": "Create New Account",
+"register_sub_title": "Enter Info Below",
+"name":"name",
+"new_account_message":"Don't Have An Account?",
+"create_account":"Create Now"
+
+
+
+
+
+}
