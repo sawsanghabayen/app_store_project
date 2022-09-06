@@ -1,3 +1,6 @@
+import 'package:database_app/api/controllers/users_api_controller.dart';
+import 'package:database_app/models/process_response.dart';
+import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -283,10 +286,23 @@ class _SettingScreenState extends State<SettingScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  AppText(
-                      text: 'Logout',
-                      fontSize: 14.sp,
-                      color: Color(0xff36596A)),
+                  InkWell(
+
+                    child: AppText(
+
+                        text: 'Logout',
+                        fontSize: 14.sp,
+                        color: Color(0xff36596A)),
+                    onTap: () async{
+                      ProcessResponse processResponse =await UsersApiController().logout();
+                      if(processResponse.success){
+                        Navigator.pushReplacementNamed(context, '/login_screen');
+                        context.showSnackBar(message: processResponse.message ,error: !processResponse.success );
+                      }
+
+
+                    },
+                  ),
                   // Icon(Icons.logout),
                 ],
               ),

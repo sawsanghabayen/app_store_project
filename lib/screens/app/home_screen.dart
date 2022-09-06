@@ -3,6 +3,7 @@ import 'package:database_app/screens/app/cart_screen.dart';
 import 'package:database_app/screens/app/liked_screen.dart';
 import 'package:database_app/screens/app/mainWidget.dart';
 import 'package:database_app/screens/app/setting_screen.dart';
+import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/custom_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,15 +26,16 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   int index=0;
 
+  // BuildContext? context;
 
-List<Screens> screens=[
-  Screens(widget: MainScreenWidget(),title: 'Home'),
-  Screens(widget: CartScreen(),title: 'My Cart'),
-  Screens(widget:   LikedScreen(),title: 'Liked Product'),
-  Screens(widget:  CategoryScreen(),title: 'Categories'),
-];
   @override
   Widget build(BuildContext context) {
+    List<Screens> screens=[
+    Screens(widget: MainScreenWidget(),title: context.localizations.home),
+    Screens(widget: CartScreen(),title: context.localizations.cart),
+    Screens(widget:   LikedScreen(),title: context.localizations.favorite),
+    Screens(widget:  CategoryScreen(),title:context.localizations.category),
+  ];
     return Scaffold(
       key: _scaffoldKey,
       appBar: CustomAppBar(context,title: screens[index].title),
@@ -45,11 +47,11 @@ List<Screens> screens=[
        currentIndex: index,
 
         items: [
-          BottomNavigationBarItem(icon:index==0? Icon(Icons.home):Icon(Icons.home_outlined), label: 'home'),
+          BottomNavigationBarItem(icon:index==0? Icon(Icons.home):Icon(Icons.home_outlined), label:context.localizations.home),
           BottomNavigationBarItem(icon:index==1?  Icon(Icons.shopping_cart):Icon(Icons.shopping_cart_outlined),
-           label: 'My Cart'),
-          BottomNavigationBarItem(icon:index==2? Icon(Icons.favorite):Icon(Icons.favorite_border),label: 'favorite'),
-          BottomNavigationBarItem(icon: index==3?Icon(Icons.category):Icon(Icons.category_outlined), label: 'categories'),
+           label:context.localizations.cart),
+          BottomNavigationBarItem(icon:index==2? Icon(Icons.favorite):Icon(Icons.favorite_border),label: context.localizations.favorite),
+          BottomNavigationBarItem(icon: index==3?Icon(Icons.category):Icon(Icons.category_outlined), label: context.localizations.categories),
         ],
         onTap:(newIndex){
           setState((){

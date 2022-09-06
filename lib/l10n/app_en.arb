@@ -1,21 +1,60 @@
 {
-"login_title": "Welcome back...",
+"login_title": "Please login to use the app",
 "login_sub_title": "Enter Email & Password",
 "login": "Login",
-"email": "Email",
-"password": "Password",
+"phone_num": "Phone Number",
+"password": "Type Password",
+"forgot_pass": "Forgot Password",
 "confirm_logout": "Confirm Logout",
 "content": "Are You Sure?",
 "confirm": "Confirm",
 "cancel": "Cancel",
 "language_title": "Change Language",
 "language_sub_title": "Choose Suitable Title",
-"register":"Register",
-"register_title": "Create New Account",
-"register_sub_title": "Enter Info Below",
-"name":"name",
+"sign_up":"Sign Up",
+"sign_in":"Sign In",
+"register_title": "Hello There",
+"register_sub_title": "Create Your Account",
+"name":"Full Name",
+"mobile":"Mobile",
+"city":"City",
+"gender":"Gender",
+"female":"Female",
+"male":"Male",
 "new_account_message":"Don't Have An Account?",
-"create_account":"Create Now"
+"new_account_message2":"You Have An Account? Please",
+"create_account":"Create Now",
+
+"project_name":"Smart Store",
+"boarding1_title":"Discover a new for you",
+"boarding2_title":"Find Your Best Product",
+"boarding3_title":"Famous and quality product at affordable prices",
+"boarding3_title":"EXpress Product Delivery",
+"boarding1_content":"Famous and quality product at affordable prices",
+"boarding2_content":"Lots of new products here and decide which product is best for you",
+"boarding3_content":"Your product will be delivered to your home safetly and securely",
+"next":"Next",
+"start":"START",
+"skip":"SKIP",
+
+"home":"Home",
+"category":"Category",
+"latest_product":"Latest Product",
+"see_more":"See More",
+"may_like":"You May Like",
+"cart":"My Cart",
+"favorite":"Favorite",
+"categories":"Categories",
+
+"cart_count_items":"عناصر",
+"cart_sub_total":"المجموع الفرعي",
+"cart_total":"المجموع الكلي",
+"cart_submit":"Cart Submit"
+
+
+
+
+
 
 
 

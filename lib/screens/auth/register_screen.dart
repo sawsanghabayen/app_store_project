@@ -1,3 +1,4 @@
+import 'package:database_app/api/controllers/users_api_controller.dart';
 import 'package:database_app/database/controllers/user_db_controller.dart';
 import 'package:database_app/models/process_response.dart';
 import 'package:database_app/prefs/shared_pref_controller.dart';
@@ -11,7 +12,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../models/city.dart';
+import '../../models/user.dart';
 import '../../provider/language_provider.dart';
+import '../../widgets/app_text.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -20,32 +23,31 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+
 class _RegisterScreenState extends State<RegisterScreen> with Helpers {
   late TextEditingController _emailTextController;
   late TextEditingController _passwordTextController;
   late TextEditingController _nameTextController;
   late TextEditingController _mobileTextController;
   late TextEditingController _cityTextController;
-  final List<City> _cities = <City>[
-    const City(id: 1, title: 'Gaza'),
-    const City(id: 2, title: 'BeitLahia'),
-    const City(id: 3, title: 'Khanyounis'),
-  ];
+  late Future<List<City>> _cities;
 
   bool _obsecure = true;
   late String? _gender;
-  late int? _selectedCityId =1 ;
+  // late int _selectedCityId ;
+  late int? _selectedCityId = 1;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+     _cities = UsersApiController().getCities();
     _emailTextController = TextEditingController();
     _passwordTextController = TextEditingController();
     _nameTextController = TextEditingController();
     _mobileTextController = TextEditingController();
     _cityTextController = TextEditingController();
-    _gender = 'M';
+    // _gender = 'M';
   }
 
   @override
@@ -62,12 +64,15 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,   //new line
+      resizeToAvoidBottomInset: false, //new line
 
       appBar: AppBar(
-          // title: Text(AppLocalizations.of(context)!.login),
-
-          ),
+        title: AppText(
+          text: context.localizations.sign_up,
+          fontSize: 17.sp,
+          color: Color(0xFF222B45),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 25.w,
@@ -76,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hello There',
+              context.localizations.register_title,
               style: GoogleFonts.nunito(
                   fontSize: 16.sp,
                   color: const Color(0xff3E3E3E).withOpacity(0.6),
@@ -86,7 +91,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
               height: 10.h,
             ),
             Text(
-              'Create Your Account',
+              context.localizations.register_sub_title,
               style: GoogleFonts.nunito(
                   fontSize: 22.sp,
                   color: const Color(0xff3E3E3E),
@@ -96,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
               height: 30.h,
             ),
             AppTextField(
-                hint: 'Full Name',
+                hint: context.localizations.name,
                 prefixIcon: Icons.person,
                 keyboardType: TextInputType.text,
                 controller: _nameTextController),
@@ -104,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
               height: 20.h,
             ),
             AppTextField(
-                hint: 'Mobile',
+                hint: context.localizations.mobile,
                 prefixIcon: Icons.phone_android,
                 keyboardType: TextInputType.number,
                 controller: _mobileTextController),
@@ -112,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
               height: 20.h,
             ),
             AppTextField(
-                hint: 'Password',
+                hint: context.localizations.password,
                 obscureText: _obsecure,
                 prefixIcon: Icons.lock,
                 suffixIcon: IconButton(
@@ -128,9 +133,158 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
               height: 20.h,
             ),
             Text(
-              'Gender',
+              context.localizations.city,
               style: GoogleFonts.nunito(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.normal,
+                fontSize: 18.sp,
+              ),
+            ),
+            Container(
+              child: FutureBuilder<List<City>>(
+                future: _cities,
+                builder: (context, snapshot) {
+                  List data = snapshot.data! as List;
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    List<City> cities= snapshot.data! ;
+                    // List<City> cities=[];
+
+                    return DropdownButtonFormField<int>(
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            //<-- SEE HERE
+                            borderSide: BorderSide(
+                              color: Color(0xFFEDF1F7),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            //<-- SEE HERE
+                            borderSide: BorderSide(color: Color(0xFFFF7750), width: 2),
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                        ),
+                        // style: BorderRadius(),
+                        hint: Text(
+                          'Select City',
+                          style: GoogleFonts.nunito(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFFCACACA)),
+                        ),
+                        value: _selectedCityId,
+                        selectedItemBuilder: (BuildContext context) {
+                          return _selectedCityId != null
+                              ? cities
+                              .map((city) => DropdownMenuItem<int>(
+                            child: Text(SharedPrefController().getValueFor<String>('language')=='en'?cities
+                                .firstWhere((element) =>
+                            element.id == _selectedCityId).nameEn! :
+                            cities.firstWhere((element) =>
+                            element.id == _selectedCityId)
+                                .nameAr!),
+                            value: city.id,
+                          ))
+                              .toList()
+                              : [];
+                        },
+                        items: cities
+                            .map((city) => DropdownMenuItem<int>(
+                          child: Text(SharedPrefController().getValueFor<String>('language')=='en'?city.nameEn!:city.nameAr!),
+                          value: city.id,
+                        ))
+                            .toList(),
+                        onChanged: (int? value) {
+                          setState(() => _selectedCityId = value);
+                        });
+                    return Text('');
+                  } else {
+                    return Text('No Data');
+                  }
+                },
+              ),
+            ),
+
+            // Container(
+            //   child: FutureBuilder<List>(
+            //     future: _cities,
+            //     builder: (context, snapshot) {
+            //       List data = snapshot.data! as List;
+            //       if (snapshot.connectionState == ConnectionState.waiting) {
+            //         return CircularProgressIndicator();
+            //       } else if (snapshot.data!.isNotEmpty && snapshot != null) {
+            //         List data = snapshot.data!;
+            //         List<City> cities=[];
+            //         data.forEach((element) {
+            //           City demo =City.fromJson(element);
+            //           cities.add(demo);
+            //         });
+            //         return DropdownButtonFormField<int>(
+            //   decoration: InputDecoration(
+            //     enabledBorder: OutlineInputBorder(
+            //       //<-- SEE HERE
+            //       borderSide: BorderSide(
+            //         color: Color(0xFFEDF1F7),
+            //         width: 2,
+            //       ),
+            //       borderRadius: BorderRadius.circular(50.0),
+            //     ),
+            //     focusedBorder: OutlineInputBorder(
+            //       //<-- SEE HERE
+            //       borderSide: BorderSide(color: Color(0xFFFF7750), width: 2),
+            //       borderRadius: BorderRadius.circular(50.0),
+            //     ),
+            //   ),
+            //   // style: BorderRadius(),
+            //   hint: Text(
+            //     'Select City',
+            //     style: GoogleFonts.nunito(
+            //         fontSize: 16.sp,
+            //         fontWeight: FontWeight.w400,
+            //         color: Color(0xFFCACACA)),
+            //   ),
+            //   value: _selectedCityId,
+            //   selectedItemBuilder: (BuildContext context) {
+            //     return _selectedCityId != null
+            //         ? cities
+            //             .map((city) => DropdownMenuItem<int>(
+            //                   child: Text(SharedPrefController().getValueFor<String>('language')=='en'?cities
+            //                       .firstWhere((element) =>
+            //                   element.id == _selectedCityId)
+            //                       .nameEn! : cities
+            //                       .firstWhere((element) =>
+            //                   element.id == _selectedCityId)
+            //                       .nameAr!),
+            //                   value: city.id,
+            //                 ))
+            //             .toList()
+            //         : [];
+            //   },
+            //   items: cities
+            //       .map((city) => DropdownMenuItem<int>(
+            //             child: Text(SharedPrefController().getValueFor<String>('language')=='en'?city.nameEn!:city.nameAr!),
+            //             value: city.id,
+            //           ))
+            //       .toList(),
+            //   onChanged: (int? value) {
+            //     setState(() => _selectedCityId = value);
+            //             });
+            //         return Text('');
+            //       } else {
+            //         return Text('No Data');
+            //       }
+            //     },
+            //   ),
+            // ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Text(
+              context.localizations.gender,
+              style: GoogleFonts.nunito(
+                fontWeight: FontWeight.normal,
                 fontSize: 18.sp,
               ),
             ),
@@ -139,7 +293,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                 Expanded(
                   child: RadioListTile<String>(
                       title: Text(
-                        'Male',
+                        context.localizations.male,
                         style: GoogleFonts.nunito(),
                       ),
                       value: 'M',
@@ -152,7 +306,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                 Expanded(
                   child: RadioListTile<String>(
                       title: Text(
-                        'Female',
+                        context.localizations.female,
                         style: GoogleFonts.nunito(),
                       ),
                       value: 'F',
@@ -164,45 +318,11 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                 ),
               ],
             ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Text(
-              'City',
-              style: GoogleFonts.nunito(
-                fontWeight: FontWeight.bold,
-                fontSize: 18.sp,
-              ),
-            ),
-            DropdownButton<int>(
-                isExpanded: true,
-                hint: Text('Select City' ,style:GoogleFonts.nunito(fontSize: 16.sp ,fontWeight:FontWeight.w400 , color:Color(0xFFCACACA)) ,) ,
-
-                value: _selectedCityId ,
-                selectedItemBuilder: (BuildContext context){
-                  return
-                  _selectedCityId != null ?
-                  _cities.map((city) => DropdownMenuItem<int>(
-                    child: Text(_cities.firstWhere((element) => element.id == _selectedCityId ).title),
-                    value: city.id,
-                  )).toList()   : [];
-
-                },
-                items: _cities
-                    .map((city) => DropdownMenuItem<int>(
-                          child: Text(city.title),
-                          value: city.id,
-                        ))
-                    .toList(),
-                onChanged: (int? value) {
-                  setState(()=> _selectedCityId =value);
-
-
-                }),
             const Spacer(),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, 'verification_screen');
+                  _performRegister();
+                  // Navigator.pushNamed(context, 'verification_screen');
                 },
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(325.w, 63.83.h),
@@ -210,7 +330,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.r))),
                 child: Text(
-                  'Continue',
+                  context.localizations.sign_up,
                   style: GoogleFonts.nunito(
                       fontSize: 16.sp,
                       color: Color(0xffFFFFFF),
@@ -222,7 +342,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('You have an account? Please',
+                Text(context.localizations.new_account_message2,
                     style: GoogleFonts.nunito(
                         color: Color(0xFF707070), fontSize: 14)),
                 TextButton(
@@ -230,7 +350,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                     Navigator.pop(context);
                     Navigator.pushReplacementNamed(context, '/login_screen');
                   },
-                  child: Text('Sign In',
+                  child: Text(context.localizations.sign_in,
                       style: GoogleFonts.nunito(
                           color: Color(0xFFFF7750), fontSize: 14)),
                   style: TextButton.styleFrom(primary: Color(0xffF3651F)),
@@ -245,4 +365,40 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
       ),
     );
   }
+
+  void _performRegister() {
+    if (_checkData()) {
+      _register();
+    }
+  }
+  bool _checkData() {
+    if (_emailTextController.text.isNotEmpty &&_cityTextController.text.isNotEmpty &&
+        _passwordTextController.text.isNotEmpty && _nameTextController.text.isNotEmpty &&_mobileTextController.text.isNotEmpty) {
+      return true;
+    }
+    context.showSnackBar( message: 'Enter Required Data!', error: true);
+    return false;
+  }
+
+  void _register() async {
+
+    ProcessResponse processResponse =await UsersApiController().register(user);
+  if(processResponse.success){
+    Navigator.pop(context);
+    context.showSnackBar(message: processResponse.message ,error: !processResponse.success);
+
+  }
+}
+
+User get user {
+  User user =User();
+  user.name=_nameTextController.text;
+  user.mobile=_mobileTextController.text;
+  user.password=_passwordTextController.text;
+  user.gender=_gender;
+  user.cityId=_selectedCityId.toString();
+  // user.=_gender;
+
+  return user;
+}
 }

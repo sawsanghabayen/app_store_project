@@ -1,3 +1,4 @@
+import 'package:database_app/utils/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,7 +18,7 @@ class CartScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             AppText(
-              text: '2 Items',
+              text: '2 '+ context.localizations.cart_count_items,
               fontSize: 14.sp,
               color: Color(0xFF3E3E3E),
               fontWeight: FontWeight.w400,
@@ -172,7 +173,7 @@ class CartScreen extends StatelessWidget {
                     Row(
                       children: [
                         AppText(
-                            text: 'Subtotal',
+                            text: context.localizations.cart_sub_total,
                             fontSize: 14.sp,
                             color: Color(0xFF3E3E3E)),
                         Spacer(),
@@ -207,7 +208,7 @@ class CartScreen extends StatelessWidget {
                     Row(
                       children: [
                         AppText(
-                          text: 'Total',
+                          text: context.localizations.cart_total,
                           fontSize: 17.sp,
                           color: Color(0xFF3E3E3E),
                           fontWeight: FontWeight.bold,
@@ -231,7 +232,7 @@ class CartScreen extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16.r))),
                         child: Text(
-                          'Cart Submit',
+                         context.localizations.cart_submit,
                           style: GoogleFonts.nunito(
                               fontSize: 16.sp,
                               color: Color(0xffFFFFFF),

@@ -32,6 +32,7 @@ import 'package:database_app/screens/outboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -55,65 +56,65 @@ class MyApp extends StatelessWidget {
        return ChangeNotifierProvider<LanguageProvider>(  /*       هنا عشان يعمم ويغير بنفس الوقت*/
        create: (context)=>LanguageProvider(),
          builder:(BuildContext context, Widget? child){
-           return  MaterialApp(
-           theme: ThemeData(
-               colorScheme: ThemeData().colorScheme.copyWith(
-                 primary: Color(0xffFF7750),
-                 // secondary: ,
-               ),
-           appBarTheme: AppBarTheme(
-             
-           elevation: 0,
-           centerTitle: true,
-           backgroundColor: Colors.transparent,
-           iconTheme: const IconThemeData(color: Colors.black),
-           titleTextStyle: GoogleFonts.poppins(fontSize: 20.sp,fontWeight: FontWeight.bold,color: Colors.black,)
-           )
-           ),
-           // localizationsDelegates: const [
-           //   GlobalMaterialLocalizations.delegate,
-           //   GlobalCupertinoLocalizations.delegate,
-           //   GlobalWidgetsLocalizations.delegate,
-           // ],
-           localizationsDelegates: AppLocalizations.localizationsDelegates,               /*هنا لترجمة الملفات*/
+           return  GetMaterialApp(
+             theme: ThemeData(
+                 colorScheme: ThemeData().colorScheme.copyWith(
+                   primary: Color(0xffFF7750),
+                   // secondary: ,
+                 ),
+                 appBarTheme: AppBarTheme(
 
-           // supportedLocales: const [
-           //   Locale('ar'),
-           //   Locale('en'),
-           // ],
-           supportedLocales: AppLocalizations.supportedLocales,
-           locale:  Locale(Provider.of<LanguageProvider>(context).language),
-           debugShowCheckedModeBanner: false,
-           initialRoute: '/launch_screen',
-           routes: {
-           '/launch_screen':(context) => const LaunchScreen(),
-           '/login_screen':(context) => const LoginScreen(),
-           '/register_screen':(context) => const RegisterScreen(),
-           '/home_screen':(context) => const HomeScreen(),
-           '/on_boarding_screen': (context) => const OnBoardingScreen(),
-           '/forgot_password_screen': (context) => const ForgotPassword(),
-           '/reset_password_screen': (context) => const ResetPasswordScreen(),
-           '/change_password_screen': (context) => const ChangePasswordScreen(),
-           '/verification_screen': (context) => const VerificationScreen(),
-           '/category_screen': (context) => const CategoryScreen(),
-           '/sub_categories_screen': (context) => const SubCategoriesScreen(),
-           '/products_screen': (context) => const ProductsScreen(),
-           '/product_screen': (context) => const ProductScreen(),
-           '/liked_screen': (context) => const LikedScreen(),
-           '/addresses_screen': (context) => const AddressesScreen(),
-           '/new_address_screen': (context) => const NewAddressScreen(),
-           '/cart_screen': (context) => const CartScreen(),
-           '/setting_screen': (context) => const SettingScreen(),
-           '/orders_screen': (context) => const OrdersScreen(),
-           '/order_details_screen': (context) => const OrderDetailsScreen(),
-           '/notifications_screen': (context) => const NotificationsScreen(),
-           '/payments_screen': (context) => const PaymentsScreen(),
-           '/check_out_screen': (context) => const CheckOutScreen(),
-           '/contact_us_screen': (context) => const ContactUsScreen(),
-           '/edit_profile_screen': (context) => const EditProfileScreen(),
-           '/about_us_screen': (context) => const AboutUsScreen(),
-           '/change_mobile_screen': (context) => const ChangeMobileScreen(),
-           },
+                     elevation: 0,
+                     centerTitle: true,
+                     backgroundColor: Colors.transparent,
+                     iconTheme: const IconThemeData(color: Colors.black),
+                     titleTextStyle: GoogleFonts.poppins(fontSize: 20.sp,fontWeight: FontWeight.bold,color: Colors.black,)
+                 )
+             ),
+             // localizationsDelegates: const [
+             //   GlobalMaterialLocalizations.delegate,
+             //   GlobalCupertinoLocalizations.delegate,
+             //   GlobalWidgetsLocalizations.delegate,
+             // ],
+             localizationsDelegates: AppLocalizations.localizationsDelegates,               /*هنا لترجمة الملفات*/
+
+             // supportedLocales: const [
+             //   Locale('ar'),
+             //   Locale('en'),
+             // ],
+             supportedLocales: AppLocalizations.supportedLocales,
+             locale:  Locale(Provider.of<LanguageProvider>(context).language),
+             debugShowCheckedModeBanner: false,
+             initialRoute: '/launch_screen',
+             routes: {
+               '/launch_screen':(context) => const LaunchScreen(),
+               '/login_screen':(context) => const LoginScreen(),
+               '/register_screen':(context) => const RegisterScreen(),
+               '/home_screen':(context) => const HomeScreen(),
+               '/on_boarding_screen': (context) => const OnBoardingScreen(),
+               '/forgot_password_screen': (context) => const ForgotPassword(),
+               '/reset_password_screen': (context) => const ResetPasswordScreen(),
+               '/change_password_screen': (context) => const ChangePasswordScreen(),
+               '/verification_screen': (context) => const VerificationScreen(),
+               // '/category_screen': (context) => const CategoryScreen(),
+               // '/sub_categories_screen': (context) =>  SubCategoriesScreen(),
+               // '/products_screen': (context) => const ProductsScreen(),
+               '/product_screen': (context) => const ProductScreen(),
+               '/liked_screen': (context) => const LikedScreen(),
+               '/addresses_screen': (context) => const AddressesScreen(),
+               // '/new_address_screen': (context) => const NewAddressScreen(),
+               '/cart_screen': (context) => const CartScreen(),
+               '/setting_screen': (context) => const SettingScreen(),
+               '/orders_screen': (context) => const OrdersScreen(),
+               '/order_details_screen': (context) => const OrderDetailsScreen(),
+               '/notifications_screen': (context) => const NotificationsScreen(),
+               '/payments_screen': (context) => const PaymentsScreen(),
+               '/check_out_screen': (context) => const CheckOutScreen(),
+               '/contact_us_screen': (context) => const ContactUsScreen(),
+               // '/edit_profile_screen': (context) => const EditProfileScreen(),
+               '/about_us_screen': (context) => const AboutUsScreen(),
+               '/change_mobile_screen': (context) => const ChangeMobileScreen(),
+             },
 
            );
          },

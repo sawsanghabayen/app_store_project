@@ -48,5 +48,5 @@ class ProductDbController extends DbOperations<Product> {
 
     throw UnimplementedError();
   }
-  
+
 }

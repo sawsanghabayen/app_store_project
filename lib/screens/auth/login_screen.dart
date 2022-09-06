@@ -1,3 +1,4 @@
+import 'package:database_app/api/controllers/users_api_controller.dart';
 import 'package:database_app/database/controllers/user_db_controller.dart';
 import 'package:database_app/models/process_response.dart';
 import 'package:database_app/prefs/shared_pref_controller.dart';
@@ -73,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
                       //   width: 13.1.w,
                       // ),
                       Text(
-                        'SMART STORE',
+                        context.localizations.project_name,
                         style: GoogleFonts.nunito(
 
                           fontSize: 20.sp,
@@ -98,13 +99,13 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
             //       color: Colors.black45),
             // ),
             Text(
-              'Please login to use the app', style: GoogleFonts.nunito(fontSize: 16.sp, color: const Color(0xff3E3E3E).withOpacity(0.6) ,fontWeight: FontWeight.w400 ),
+              context.localizations.login_title, style: GoogleFonts.nunito(fontSize: 16.sp, color: const Color(0xff3E3E3E).withOpacity(0.6) ,fontWeight: FontWeight.w400 ),
             ),
             SizedBox(
               height: 20.h,
             ),
             AppTextField(
-                hint: 'Phone Number',
+                hint:  context.localizations.phone_num,
                 prefixIcon: Icons.phone,
                 keyboardType: TextInputType.phone,
                 controller: _phoneTextController),
@@ -112,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
               height: 20.h,
             ),
             AppTextField(
-                hint: 'Type password',
+                hint: context.localizations.password,
                 obscureText: _obsecure,
                 prefixIcon: Icons.lock,
                 suffixIcon: IconButton(
@@ -130,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  child: const Text('Forgot password?'),
+                  child:  Text(context.localizations.forgot_pass +'?'),
                   onPressed: () {
                     Navigator.pushNamed(context, '/forgot_password_screen');
                   },
@@ -143,8 +144,8 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
                 onPressed: () {
                   // print(_emailTextController.text);
                   // print(_passwordTextController.text);
-                  Navigator.pushReplacementNamed(context, '/home_screen');
-                  // _performLogin();
+                  // Navigator.pushReplacementNamed(context, '/home_screen');
+                  _performLogin();
                 },
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(325.w, 63.83.h),
@@ -152,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.r))),
                 child: Text(
-                  'Login',
+                  context.localizations.login,
                   style: GoogleFonts.nunito(fontSize: 16.sp ,color: Color(0xffFFFFFF) ,fontWeight: FontWeight.bold),
                 )),
             SizedBox(
@@ -163,12 +164,12 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
 
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Don\'t have an account?'  ,style: GoogleFonts.nunito(color: Color(0xFF707070) ,fontSize: 14)  ),
+                Text(context.localizations.new_account_message  ,style: GoogleFonts.nunito(color: Color(0xFF707070) ,fontSize: 14)  ),
                 TextButton(
 
                   onPressed: () =>
                       Navigator.pushNamed(context, '/register_screen'),
-                  child: Text('Sign Up',style: GoogleFonts.nunito(color: Color(0xFFFF7750) ,fontSize: 14)),
+                  child: Text(context.localizations.sign_up,style: GoogleFonts.nunito(color: Color(0xFFFF7750) ,fontSize: 14)),
                   style: TextButton.styleFrom(primary: Color(0xffF3651F)),
                 )
               ],
@@ -180,86 +181,6 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
     );
   }
 
-  void _showLangaugeBottomSheet() async {
-    String? langCode = await showModalBottomSheet<String>(
-        backgroundColor: Colors.white,
-        clipBehavior: Clip.antiAlias,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10), topLeft: Radius.circular(10))),
-        context: context,
-        builder: (context) {
-          return (BottomSheet(
-            backgroundColor: Colors.transparent,
-            onClosing: () {},
-            builder: (context) {
-              return StatefulBuilder(
-                builder: (context, setState) {
-                  return Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 25.w, vertical: 15.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.language_title,
-                          style: GoogleFonts.nunito(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.language_sub_title,
-                          style: GoogleFonts.nunito(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w300,
-                              color: Colors.black45,
-                              height: 1.0),
-                        ),
-                        const Divider(),
-                        RadioListTile<String>(
-                            title: Text(
-                              'English',
-                              style: GoogleFonts.nunito(),
-                            ),
-                            value: 'en',
-                            groupValue: _language,
-                            onChanged: (String? value) {
-                              if (value != null) {
-                                setState(() => _language = value);
-                                Navigator.pop(context, 'en');
-                              }
-                            }),
-                        RadioListTile<String>(
-                            title: Text(
-                              'العربية',
-                              style: GoogleFonts.nunito(),
-                            ),
-                            value: 'ar',
-                            groupValue: _language,
-                            onChanged: (String? value) {
-                              if (value != null) {
-                                setState(() => _language = value);
-                                Navigator.pop(context, 'ar');
-                              }
-                            }),
-
-                        // RadioListTile<String>
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-          ));
-        });
-    if (langCode != null) {
-      Future.delayed(Duration(milliseconds: 500), () {
-        Provider.of<LanguageProvider>(context, listen: false).changeLanguage();
-      });
-    }
-  }
 
   void _performLogin() {
     if (_checkData()) {
@@ -272,21 +193,20 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
         _passwordTextController.text.isNotEmpty) {
       return true;
     }
-    showSnackBar(context, message: 'Enter Required Data', error: true);
+    context.showSnackBar( message: 'Enter Required Data!', error: true);
     return false;
   }
 
   void _login() async {
-    ProcessResponse processResponse = await UserDbController().login(
-        email: _phoneTextController.text,
-        password: _passwordTextController.text);
+    ProcessResponse processResponse = await UsersApiController().login(
+        mobile: _phoneTextController.text, password: _passwordTextController.text);
     // print(processResponse.success);
-    if (processResponse.success) {
+    if(processResponse.success){
       Navigator.pushReplacementNamed(context, '/home_screen');
+
     }
-    context.showSnackBar(
-        message: processResponse.message, error: !processResponse.success);
-  }
+    context.showSnackBar(message: processResponse.message ,error: !processResponse.success);
+    }
 }
 
 class _buildLogin extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // هنا معناه بنعمل build على ال context
 //   وبنعمل اضافات على عناصر موجودة مسبقا
@@ -19,7 +20,9 @@ extension ContextHelper on BuildContext{
   }
 
 
-
+  AppLocalizations get localizations{
+    return AppLocalizations.of(this)!;
+  }
 
 
 

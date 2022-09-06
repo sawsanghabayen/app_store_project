@@ -1,7 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
-enum PrefKeys {language ,email ,name, loggedIn}
+
+enum PrefKeys {language ,id,mobile,gender,active,verified,email ,name, loggedIn,token ,city_id}
 class SharedPrefController{
   SharedPrefController._();
   late SharedPreferences _sharedPreferences;
@@ -15,10 +16,17 @@ class SharedPrefController{
     _sharedPreferences= await SharedPreferences.getInstance();
 
   }
-  void save({required User user}){
+  void save(User user){
     _sharedPreferences.setBool(PrefKeys.loggedIn.name, true);
-    _sharedPreferences.setString(PrefKeys.email.name, user.email);
-    _sharedPreferences.setString(PrefKeys.name.name, user.name);
+    _sharedPreferences.setString(PrefKeys.email.name, user.email??'');
+    _sharedPreferences.setString(PrefKeys.name.name, user.name!);
+    _sharedPreferences.setString(PrefKeys.id.name, user.id.toString());
+    _sharedPreferences.setString(PrefKeys.verified.name, user.verified.toString());
+    _sharedPreferences.setString(PrefKeys.token.name, 'Bearer ${user.token!}');
+    _sharedPreferences.setString(PrefKeys.city_id.name, user.cityId!);
+    _sharedPreferences.setString(PrefKeys.mobile.name, user.mobile!);
+    _sharedPreferences.setString(PrefKeys.gender.name, user.gender!);
+    _sharedPreferences.setString(PrefKeys.active.name, user.active.toString());
 
   }
 
@@ -46,11 +54,14 @@ class SharedPrefController{
       return _sharedPreferences.remove(key);
     }
     return false;
-
   }
 //  طريقة تانية
   void clear(){
-  _sharedPreferences.clear();
+    for(String key in _sharedPreferences.getKeys()){
+      if(key!=PrefKeys.language.name){
+     _sharedPreferences.remove(key);
+      }
+    }
   }
 
 }

@@ -1,3 +1,4 @@
+import 'package:database_app/utils/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../widgets/on_boarding_content.dart';
@@ -41,7 +42,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/login_screen');
                   },
-                  child: const Text('START' ,style: TextStyle(color:Color(0xFFFF7750)),),
+                  child:  Text(context.localizations.start ,style: TextStyle(color:Color(0xFFFF7750)),),
                 ),
                 child: TextButton(
                   onPressed: () {
@@ -55,7 +56,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     // alignment: AlignmentDirectional.topEnd
                     primary: const Color(0xFFFF7750),
                   ),
-                  child: const Text('SKIP'),
+                  child:  Text(context.localizations.skip),
                 ),
               ),
             ),
@@ -71,21 +72,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   print('CurrentPage: ${_pageController.page}');
                   setState(() => _currentPage = currentPage);
                 },
-                children: const [
+                children:  [
                   OnBoardingContent(
                     image: 'image_1',
-                    title: 'Discover a New For You',
-                    subTitle:'Lots of new products here and decide which product is best for you' ,
+                    title: context.localizations.boarding1_title,
+                    subTitle:context.localizations.boarding1_content ,
                   ),
                   OnBoardingContent(
                     image: 'image_2',
-                    title: 'Find Your Best Product',
-                    subTitle: 'Famous and quality product at affordable prices',
+                    title: context.localizations.boarding2_title,
+                    subTitle: context.localizations.boarding2_content,
                   ),
                   OnBoardingContent(
                     image: 'image_3',
-                    title: 'EXpress Product Delivery',
-                    subTitle: 'Your product will be delivered to your home safetly and securely',
+                    title: context.localizations.boarding3_title,
+                    subTitle: context.localizations.boarding3_content,
                   ),
                 ],
               ),
@@ -129,7 +130,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   borderRadius: BorderRadius.circular(15.r),
                 ),
               ),
-              child:  _currentPage == 2 ? const Text('Start Your Journey') : const Text('Next'),
+              child:  _currentPage == 2 ?  Text( context.localizations.start) :  Text( context.localizations.next),
             ),
             const SizedBox(height: 58.2),
             // Row(

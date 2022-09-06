@@ -1,3 +1,4 @@
+import 'package:database_app/models/process_response.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,4 +15,6 @@ mixin Helpers {
       dismissDirection: DismissDirection.horizontal,
     ));
   }
+  ProcessResponse get errorResponse => ProcessResponse(message: 'Something Went Wrong ,Try Again',success: false);
+
 }

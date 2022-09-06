@@ -38,7 +38,7 @@ class CustomProduct extends StatelessWidget {
                   // Image.asset(image),
                   Center(
                       child: Image(
-                    image: AssetImage(image),
+                    image: NetworkImage(image),
                   )),
 
                   Positioned(

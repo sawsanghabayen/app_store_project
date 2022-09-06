@@ -6,12 +6,17 @@ import 'app_text.dart';
 class CustomCategory extends StatelessWidget {
   final double height;
   final double width;
+  final String image;
+  final String title;
+
    EdgeInsets? margin =EdgeInsets.zero;
 
    CustomCategory({
     Key? key,
     required this.height,
     required this.width,
+    required this.image,
+    required this.title,
      this.margin,
   }) : super(key: key);
 
@@ -27,7 +32,7 @@ class CustomCategory extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 25.h),
         child: AppText(
-            text: 'Furniture',
+            text: title,
             fontSize: 16,
             color: Colors.white,
             fontWeight: FontWeight.bold),
@@ -35,7 +40,7 @@ class CustomCategory extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
         image: DecorationImage(
-          image: AssetImage('images/jacket.jpg'),
+          image: NetworkImage(image),
           fit: BoxFit.cover,
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../prefs/shared_pref_controller.dart';
 import 'app_text.dart';
 // import 'package:shopping_online/widgets/app_text.dart';
 
@@ -24,7 +25,7 @@ class CustomDrawer extends StatelessWidget {
               height: 55.h,
               width: 176.w,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CircleAvatar(
                     radius: 25,
@@ -32,8 +33,9 @@ class CustomDrawer extends StatelessWidget {
                     backgroundImage: AssetImage('images/avatar.png'),
 
                   ),
+                  SizedBox(width: 15.w,),
                   AppText(
-                      text: 'Rizale Greyrat',
+                      text: SharedPrefController().getValueFor<String>(PrefKeys.name.name)??'',
                       fontSize: 16.sp,
                       color: Colors.black),
                   // Divider(color: Col,),
@@ -53,7 +55,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context ,'/');
+                Navigator.pushNamed(context ,'/payments_screen');
               },
             ),
             ListTile(
