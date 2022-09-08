@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:database_app/getx/cart_getx_controller.dart';
 import 'package:database_app/getx/order_getx_controller.dart';
 import 'package:database_app/models/process_response.dart';
+import 'package:database_app/screens/app/addresses_screen.dart';
 import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/app_text.dart';
 import 'package:database_app/widgets/icon_with_text.dart';
@@ -37,7 +38,12 @@ class CheckOutScreen extends StatelessWidget {
                 children: [
 
 
-                  _buildType(name: 'Address', onPress: () {}, text: 'Change'),
+                  _buildType(name: 'Address', onPress: () {
+                    Get.to((){
+                    return   AddressesScreen();
+                    });
+                    // Navigator.pushNamed(context, '/addresses_screen');
+                  }, text: 'Change'),
                   SizedBox(
                     height: 15.h,
                   ),

@@ -52,7 +52,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 flex: 2,
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: controller.orderDetails.value!.products!.length!,
+                  itemCount: controller.orderDetails.value!.products!.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.only(bottom: 16.h),

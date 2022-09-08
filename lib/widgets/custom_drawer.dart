@@ -1,12 +1,13 @@
+import 'package:database_app/screens/app/addresses_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../prefs/shared_pref_controller.dart';
 import 'app_text.dart';
 // import 'package:shopping_online/widgets/app_text.dart';
 
 class CustomDrawer extends StatelessWidget {
-
   const CustomDrawer({
     Key? key,
   }) : super(key: key);
@@ -31,11 +32,14 @@ class CustomDrawer extends StatelessWidget {
                     radius: 25,
                     // backgroundColor: Color(0xFFFF7750),
                     backgroundImage: AssetImage('images/avatar.png'),
-
                   ),
-                  SizedBox(width: 15.w,),
+                  SizedBox(
+                    width: 15.w,
+                  ),
                   AppText(
-                      text: SharedPrefController().getValueFor<String>(PrefKeys.name.name)??'',
+                      text: SharedPrefController()
+                              .getValueFor<String>(PrefKeys.name.name) ??
+                          '',
                       fontSize: 16.sp,
                       color: Colors.black),
                   // Divider(color: Col,),
@@ -55,7 +59,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context ,'/payments_screen');
+                Navigator.pushNamed(context, '/payments_screen');
               },
             ),
             ListTile(
@@ -66,7 +70,10 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context ,'/addresses_screen');
+                Get.to(() {
+                  return AddressesScreen();
+                });
+                // Get.to(AddressesScreen());// Navigator.pushNamed(context ,'/addresses_screen');
               },
             ),
             // ListTile(
@@ -88,7 +95,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context ,'/orders_screen');
+                Navigator.pushNamed(context, '/orders_screen');
               },
             ),
             // ListTile(
@@ -125,7 +132,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context ,'/setting_screen');
+                Navigator.pushNamed(context, '/setting_screen');
               },
             ),
             ListTile(
@@ -136,7 +143,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context ,'/');
+                Navigator.pushNamed(context, '/');
               },
             ),
             ListTile(
@@ -147,7 +154,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context ,'/');
+                Navigator.pushNamed(context, '/');
               },
             ),
           ],

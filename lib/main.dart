@@ -10,7 +10,7 @@ import 'package:database_app/screens/app/contact_us_screen.dart';
 import 'package:database_app/screens/app/edit_profile_screen.dart';
 import 'package:database_app/screens/app/home_screen.dart';
 import 'package:database_app/screens/app/liked_screen.dart';
-import 'package:database_app/screens/app/new_addess.dart';
+import 'package:database_app/screens/app/new_addess_screen.dart';
 import 'package:database_app/screens/app/notifications_screen.dart';
 import 'package:database_app/screens/app/order_details_screen.dart';
 import 'package:database_app/screens/app/orders_screen.dart';
@@ -101,8 +101,8 @@ class MyApp extends StatelessWidget {
                // '/products_screen': (context) => const ProductsScreen(),
                // '/product_screen': (context) => const ProductScreen(),
                '/liked_screen': (context) => const LikedScreen(),
-               '/addresses_screen': (context) => const AddressesScreen(),
-               // '/new_address_screen': (context) => const NewAddressScreen(),
+               '/addresses_screen': (context) =>  AddressesScreen(),
+               '/new_address_screen': (context) => const NewAddressScreen(),
                '/cart_screen': (context) =>  CartScreen(),
                '/setting_screen': (context) => const SettingScreen(),
                '/orders_screen': (context) =>  OrdersScreen(),

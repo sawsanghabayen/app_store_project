@@ -5,8 +5,8 @@ class Address {
   String? name;
   String? info;
   String? contactNumber;
-  Null? lat;
-  Null? lang;
+  String? lat;
+  String? lang;
   int? cityId;
   City? city;
 
