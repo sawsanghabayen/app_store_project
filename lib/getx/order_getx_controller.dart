@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:database_app/api/controllers/order_api_controller.dart';
 import 'package:database_app/getx/cart_getx_controller.dart';
 import 'package:database_app/getx/product_getx_controller.dart';
+import 'package:database_app/models/product.dart';
 import 'package:database_app/prefs/shared_pref_controller.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -12,6 +13,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import '../database/controllers/cart_db_controller.dart';
 import '../models/cart.dart';
 import '../models/order.dart';
+import '../models/order_details.dart';
 import '../models/process_response.dart';
 
 class OrderGetxController extends GetxController {
@@ -20,6 +22,10 @@ class OrderGetxController extends GetxController {
   // RxList<Cart> cartItems = <Cart>[].obs;
   List<Map<String, dynamic>> list = [];
   RxList<Order> orders = <Order>[].obs;
+  RxList<Product> products = <Product>[].obs;
+  Rx<OrderDetails?> orderDetails = OrderDetails().obs;
+
+  // RxList<OrderDetails?> orderDetails = <OrderDetails>[].obs;
   RxBool loading = false.obs;
 
 
@@ -32,6 +38,7 @@ class OrderGetxController extends GetxController {
   } // List<Product> products = <Product>[];
 
   OrderApiController orderApiController = OrderApiController();
+  // OrderApiController orderDetailsApiController = OrderApiController();
 
   Future<ProcessResponse> create(
       List<Cart> carts, String paymentType, int addressId) async {
@@ -49,6 +56,15 @@ class OrderGetxController extends GetxController {
     loading.value = false;
     update();
   }
+
+  Future<OrderDetails?> getOrderDetails({required int id}) async {
+    loading.value = true;
+    orderDetails.value = await orderApiController.getOrderDetails(id: id);
+    loading.value = false;
+    update();
+    return orderDetails.value;
+  }
+
 
   ProcessResponse getResponse(bool success,
       {String message = 'Operation completed successfully'}) {

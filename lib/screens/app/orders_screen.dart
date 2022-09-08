@@ -1,3 +1,4 @@
+import 'package:database_app/models/order_details.dart';
 import 'package:database_app/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,11 +7,17 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../getx/order_getx_controller.dart';
-class OrdersScreen extends StatelessWidget {
+import 'order_details_screen.dart';
+class OrdersScreen extends StatefulWidget {
 
    OrdersScreen({Key? key}) : super(key: key);
-  OrderGetxController controller = Get.put(OrderGetxController());
 
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends State<OrdersScreen> {
+  OrderGetxController controller = Get.put(OrderGetxController());
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +42,9 @@ class OrdersScreen extends StatelessWidget {
             padding:  EdgeInsets.only(bottom: 16.h),
             child: InkWell(
               onTap: (){
-                Navigator.pushNamed(context, '/order_details_screen');
+                Get.to(()=>
+                    OrderDetailsScreen(id:controller.orders[index].id!)
+                );
               },
               child: Container(
                 height: 100.h,

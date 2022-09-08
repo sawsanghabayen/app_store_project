@@ -7,6 +7,7 @@ class Order {
   String? storeId;
   String? userId;
   String? addressId;
+  String? orderQuantity;
   Null? paymentCardId;
   String? orderProductsCount;
 
@@ -32,6 +33,7 @@ class Order {
     userId = json['user_id'];
     addressId = json['address_id'];
     paymentCardId = json['payment_card_id'];
+
     orderProductsCount = json['order_products_count'];
   }
 
@@ -47,6 +49,7 @@ class Order {
     data['address_id'] = this.addressId;
     data['payment_card_id'] = this.paymentCardId;
     data['order_products_count'] = this.orderProductsCount;
+    data['order_quantity'] = this.orderQuantity;
     return data;
   }
 }

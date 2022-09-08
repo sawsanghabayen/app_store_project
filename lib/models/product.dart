@@ -12,6 +12,7 @@ class Product {
   String? offerPrice;
   bool? isFavorite;
   String? imageUrl;
+  String? orderQuantity;
 
   Product(
       {this.id,
@@ -26,6 +27,8 @@ class Product {
         this.productRate,
         this.offerPrice,
         this.isFavorite,
+        this.orderQuantity,
+
         this.imageUrl});
 
   Product.fromJson(Map<String, dynamic> json) {
@@ -42,6 +45,7 @@ class Product {
     offerPrice = json['offer_price'];
     isFavorite = json['is_favorite'];
     imageUrl = json['image_url'];
+    orderQuantity = json['order_quantity'];
   }
 
   Map<String, dynamic> toJson() {
@@ -59,6 +63,7 @@ class Product {
     data['offer_price'] = this.offerPrice;
     data['is_favorite'] = this.isFavorite;
     data['image_url'] = this.imageUrl;
+    data['order_quantity'] = this.orderQuantity;
     return data;
   }
 }

@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:database_app/models/cart.dart';
 
 import '../../models/order.dart';
+import '../../models/order_details.dart';
 import '../../models/process_response.dart';
 import '../../prefs/shared_pref_controller.dart';
 import '../../utils/helpers.dart';
@@ -51,14 +52,20 @@ class OrderApiController with Helpers{
       return jsonDataObject.map((jsonObject) => Order.fromJson(jsonObject)).toList();
     }
     return [];
-    // var response = await http.get(getUrl(ApiSettings.ORDER), headers: requestHeaders);
-    // if (isSuccessRequest(response.statusCode)) {
-    //   var data = jsonDecode(response.body)['list'] as List;
-    //   List<Order> orders = data.map((e) => Order.fromJson(e)).toList();
-    //   return orders;
-    // }
-    // return [];
+
   }
+  Future<OrderDetails?> getOrderDetails({required int id}) async {
+    var response = await http.get(Uri.parse(ApiSettings.order+'/$id'),headers: {
+      HttpHeaders.authorizationHeader: SharedPrefController().getValueFor<String>(PrefKeys.token.name)!,
+      'X-Requested-With': 'XMLHttpRequest',
+    });
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      OrderDetails orderDetails = OrderDetails.fromJson(jsonDecode(response.body)['data']);
+      return orderDetails;
+    }
+    return null;
+  }
+
 
 
 }

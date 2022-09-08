@@ -106,7 +106,7 @@ class MyApp extends StatelessWidget {
                '/cart_screen': (context) =>  CartScreen(),
                '/setting_screen': (context) => const SettingScreen(),
                '/orders_screen': (context) =>  OrdersScreen(),
-               '/order_details_screen': (context) => const OrderDetailsScreen(),
+               // '/order_details_screen': (context) =>  OrderDetailsScreen(),
                '/notifications_screen': (context) => const NotificationsScreen(),
                '/payments_screen': (context) => const PaymentsScreen(),
                '/check_out_screen': (context) =>  CheckOutScreen(),
