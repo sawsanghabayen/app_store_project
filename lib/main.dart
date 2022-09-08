@@ -109,7 +109,7 @@ class MyApp extends StatelessWidget {
                '/order_details_screen': (context) => const OrderDetailsScreen(),
                '/notifications_screen': (context) => const NotificationsScreen(),
                '/payments_screen': (context) => const PaymentsScreen(),
-               '/check_out_screen': (context) => const CheckOutScreen(),
+               '/check_out_screen': (context) =>  CheckOutScreen(),
                '/contact_us_screen': (context) => const ContactUsScreen(),
                // '/edit_profile_screen': (context) => const EditProfileScreen(),
                '/about_us_screen': (context) => const AboutUsScreen(),

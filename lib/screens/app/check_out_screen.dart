@@ -1,11 +1,23 @@
+import 'dart:convert';
+
+import 'package:database_app/getx/cart_getx_controller.dart';
+import 'package:database_app/getx/order_getx_controller.dart';
+import 'package:database_app/models/process_response.dart';
+import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/app_text.dart';
 import 'package:database_app/widgets/icon_with_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CheckOutScreen extends StatelessWidget {
-  const CheckOutScreen({Key? key}) : super(key: key);
+   CheckOutScreen({Key? key}) : super(key: key);
+  CartGetxController cartGetxController=Get.put<CartGetxController>(CartGetxController());
+  OrderGetxController orderGetxController=Get.put<OrderGetxController>(OrderGetxController());
+  List<Map<String,dynamic>> list=[];
+  // CartGetxController cartGetxController=Get.put<CartGetxController>(CartGetxController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -183,8 +195,8 @@ class CheckOutScreen extends StatelessWidget {
                     ),
                     Spacer(),
                     ElevatedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/check_out_screen');
+                        onPressed: ()async {
+                          OrderGetxController.to.create(CartGetxController.to.cartItems.value, 'Cash', 605);
                         },
                         style: ElevatedButton.styleFrom(
                             minimumSize: Size(315.w, 58.83.h),

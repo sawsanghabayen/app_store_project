@@ -32,9 +32,13 @@ class Cart {
     map['product_name']=productName;
     map['product_image']=productImage;
     return map;
-
   }
-
+  Map<String,dynamic> toMapForApi(){
+    Map<String,dynamic>map=<String,dynamic>{};
+    map['product_id']=productId;
+    map['quantity']=count;
+    return map;
+  }
 
 
 
