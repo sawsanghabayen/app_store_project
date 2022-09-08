@@ -27,23 +27,7 @@ class DbController {
       onOpen: (Database database) {},
 
       onCreate: (Database database , int version) async{
-        await database.execute('CREATE TABLE IF NOT EXISTS users('
-            'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
-            'name TEXT NOT NULL,'
-            'email TEXT NOT NULL,'
-            'password TEXT NOT NULL'
-        ' )');
-        await database.execute('CREATE TABLE IF NOT EXISTS products('
-            'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
-            'name TEXT NOT NULL,'
-            'info TEXT NOT NULL,'
-            'price REAL NOT NULL,'
-            'quantity INTEGER DEFAULT (0),'
-            'user_id INTEGER,'
-            'FOREIGN KEY (user_id) references users (id)'
 
-
-            ' )');
         await database.execute('CREATE TABLE IF NOT EXISTS cart('
             'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
             'total REAL NOT NULL,'
@@ -52,29 +36,11 @@ class DbController {
             'user_id INTEGER,'
             'product_id INTEGER,'
             'product_name Text,'
-            'FOREIGN KEY (user_id) references users (id),'
-            'FOREIGN KEY (product_id) references products (id)'
-            ' )');
+            'product_image Text)');
 
       },
       onUpgrade: (Database database , int oldVersion , int newVersion) async{
-        await database.execute('CREATE TABLE IF NOT EXISTS users('
-            'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
-            'name TEXT NOT NULL,'
-            'email TEXT NOT NULL,'
-            'password TEXT NOT NULL'
-            ' )');
-        await database.execute('CREATE TABLE IF NOT EXISTS products('
-            'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
-            'name TEXT NOT NULL,'
-            'info TEXT NOT NULL,'
-            'price REAL NOT NULL,'
-            'quantity INTEGER DEFAULT (0),'
-            'user_id INTEGER,'
-            'FOREIGN KEY (user_id) references users (id)'
 
-
-            ' )');
         await database.execute('CREATE TABLE IF NOT EXISTS cart('
             'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
             'total REAL NOT NULL,'
@@ -83,10 +49,7 @@ class DbController {
             'user_id INTEGER,'
             'product_id INTEGER,'
             'product_name Text,'
-            'product_image Text,'
-            'FOREIGN KEY (user_id) references users (id),'
-            'FOREIGN KEY (product_id) references products (id)'
-            ' )');
+            'product_image Text)');
       },
       onDowngrade: (Database database , int oldVersion , int newVersion){},
     );
