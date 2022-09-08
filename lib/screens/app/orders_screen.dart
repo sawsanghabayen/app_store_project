@@ -1,9 +1,16 @@
 import 'package:database_app/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../getx/order_getx_controller.dart';
 class OrdersScreen extends StatelessWidget {
-  const OrdersScreen({Key? key}) : super(key: key);
+
+   OrdersScreen({Key? key}) : super(key: key);
+  OrderGetxController controller = Get.put(OrderGetxController());
+
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +19,18 @@ class OrdersScreen extends StatelessWidget {
       appBar: AppBar(title: AppText(text: 'My Orders' , fontSize: 20.sp,
         color: Color(0xFF3E3E3E),
         fontWeight: FontWeight.bold,),),
-      body: Padding(
+      body: GetX<OrderGetxController>(builder: (controller) {
+      return controller.loading.value
+          ? Center(child: CircularProgressIndicator())
+          : controller.orders.isNotEmpty
+
+          ?
+
+      Padding(
         padding: EdgeInsets.symmetric(horizontal: 25.w),
-        child: ListView.builder(itemBuilder: (context, index) {
+        child: ListView.builder(
+          itemCount: controller.orders.length,
+          itemBuilder: (context, index) {
           return Padding(
             padding:  EdgeInsets.only(bottom: 16.h),
             child: InkWell(
@@ -71,7 +87,7 @@ class OrdersScreen extends StatelessWidget {
                                   ),
                               children: [
                                 TextSpan(
-                                  text: '547',
+                                  text: controller.orders[index].id.toString(),
                                   style: GoogleFonts.nunito(
                                       fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
@@ -99,7 +115,7 @@ class OrdersScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: 'Cash',
+                                  text: controller.orders[index].paymentType,
                                   style: GoogleFonts.nunito(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
@@ -139,7 +155,7 @@ class OrdersScreen extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: 'Waiting',
+                                  text:controller.orders[index].status,
                                   style: GoogleFonts.nunito(
                                     fontSize: 14.sp,
                                     fontWeight: FontWeight.w400,
@@ -154,7 +170,7 @@ class OrdersScreen extends StatelessWidget {
                           height: 3.h,
                         ),
                         AppText(
-                          text: '28/8/2022,1:00PM',
+                          text: controller.orders[index].date!,
                           fontSize: 14.sp,
                           color: Color(0xFFCACACA),
                           fontWeight: FontWeight.w400,
@@ -183,7 +199,7 @@ class OrdersScreen extends StatelessWidget {
                             //   fontWeight: FontWeight.bold,
                             // ),
                               AppText(
-                                text: '608',
+                                text: controller.orders[index].total.toString(),
                                 fontSize: 17.sp,
                                 color: Color(0xffFF7750),
                                 fontWeight: FontWeight.bold,
@@ -213,9 +229,27 @@ class OrdersScreen extends StatelessWidget {
             ),
           );
         },),
-      ),
+      ):
+      Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(
+              'images/noItemInCart.png',
+            ),
+            SizedBox(
+              height: 15.h,
+            ),
+            AppText(
+                text: 'No Orders!',
+                fontSize: 18.sp,
+                color: Colors.grey.shade400),
+          ],
+        ),
+      );
 
-
+      }),
     );
   }
 }
+

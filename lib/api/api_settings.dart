@@ -9,6 +9,6 @@ class ApiSettings {
   static const String categories='${_basedUrl}categories';
   static const String products='${_basedUrl}sub-categories';
   static const String detailsproducts='${_basedUrl}products';
-  static const String createorder='${_basedUrl}orders';
+  static const String order='${_basedUrl}orders';
   static const String favoriteproducts='${_basedUrl}favorite-products';
 }
