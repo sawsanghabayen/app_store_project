@@ -45,39 +45,44 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
         builder: (controller) {
           return controller.loading.value
               ? Center(child: CircularProgressIndicator())
-              :controller.subCategories.isNotEmpty?  Padding(
-                  // padding: EdgeInsets.symmetric(horizontal: 25.w ),
-                  padding:
-                      EdgeInsets.only(bottom: 15.h, right: 25.w, left: 25.w),
-                  child: ListView(
-                    children: [
-                      AppText(
-                        text: 'Sub Categories',
-                        fontSize: 17.sp,
-                        color: Color(0xFF3E3E3E),
-                        fontWeight: FontWeight.bold,
+              :  Padding(
+                      // padding: EdgeInsets.symmetric(horizontal: 25.w ),
+                      padding: EdgeInsets.only(
+                          bottom: 15.h, right: 25.w, left: 25.w),
+                      child: ListView(
+                        children: [
+                          AppText(
+                            text: 'Sub Categories',
+                            fontSize: 17.sp,
+                            color: Color(0xFF3E3E3E),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          GridView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controller.subCategories.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      childAspectRatio: 153.w / 220.h,
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 19.sp,
+                                      mainAxisSpacing: 20.sp),
+                              itemBuilder: (context, index) {
+                                return SubCategoryWidget(
+                                    subCategory:
+                                        controller.subCategories[index],
+                                    onTap: () {
+                                      Get.to(() => ProductsScreen(
+                                          id: controller
+                                              .subCategories[index].id));
+                                    });
+                              })
+                        ],
                       ),
-                      SizedBox(
-                        height: 30.h,
-                      ),
-                      GridView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: controller.subCategories.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  childAspectRatio: 153.w / 220.h,
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 19.sp,
-                                  mainAxisSpacing: 20.sp),
-                          itemBuilder: (context, index) {
-                            return SubCategoryWidget(subCategory: controller.subCategories[index], onTap: (){
-                            Get.to(()=>  ProductsScreen(id: controller.subCategories[index].id));
-                            });
-                          })
-                    ],
-                  ),
-                ):Text('No Data');
+                    );
         },
       ),
     );

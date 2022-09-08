@@ -1,4 +1,5 @@
 import 'package:database_app/getx/product_getx_controller.dart';
+import 'package:database_app/screens/app/product_screen.dart';
 import 'package:database_app/widgets/app_text.dart';
 import 'package:database_app/widgets/build_type.dart';
 import 'package:database_app/widgets/custom_category.dart';
@@ -48,13 +49,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
         builder: (controller) {
           return controller.loading.value
               ? CircularProgressIndicator()
-              : controller.products.isNotEmpty
-                  ? Padding(
+              :
+                  Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: 25.w, vertical: 10.h),
                       child: ListView(
                         children: [
-
                           GridView.builder(
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
@@ -67,12 +67,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                       mainAxisSpacing: 20.sp),
                               itemBuilder: (context, index) {
                                 return CustomProduct(
-                                  image: controller.products[index].imageUrl!,
-                                  text:  controller.products[index].nameEn!,
+                                  product: controller.products[index],
+                                    );
+                                  },
+                                )
 
-                                  onTap: () {},
-                                );
-                              }),
+
                           // SizedBox(
                           //   height: 15.h,
                           // ),
@@ -100,8 +100,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           // ),
                         ],
                       ),
-                    )
-                  : Text('No Data');
+                    );
         },
       ),
     );

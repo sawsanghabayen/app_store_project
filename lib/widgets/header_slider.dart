@@ -10,8 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HeaderPage extends StatefulWidget {
-  final List<MySlider> images;
+class HeaderPage<T> extends StatefulWidget {
+  final List<T> images;
 
   HeaderPage({Key? key, required this.images}) : super(key: key);
 
@@ -39,7 +39,8 @@ class _HeaderPageState extends State<HeaderPage> {
           enlargeCenterPage: true,
           scrollDirection: Axis.horizontal,
         ),
-        items: widget.images.map((MySlider slider) {
+        items: widget.images.map(
+                ( slider) {
           return Builder(
             builder: (BuildContext context) {
               return CachedNetworkImage(
@@ -50,7 +51,7 @@ class _HeaderPageState extends State<HeaderPage> {
                   child: CircularProgressIndicator(),
                 ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               );
             },
           );

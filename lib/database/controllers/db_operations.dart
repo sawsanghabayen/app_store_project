@@ -13,7 +13,11 @@ abstract class DbOperations<Model> {
 
   Future<bool> update(Model model);
 
-  Future<bool> delete(id);
+  Future<bool> delete(int id);
+
+  Future<void> clear() async {
+
+  }
 
 
 

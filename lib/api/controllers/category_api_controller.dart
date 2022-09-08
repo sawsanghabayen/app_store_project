@@ -46,8 +46,11 @@ import 'package:database_app/prefs/shared_pref_controller.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+import '../../models/sub_category.dart';
 
-class StoreApiController{
+
+class CategoryApiController{
+
   Future<List<Categories>> getCategories() async{
     String token =SharedPrefController().getValueFor<String>( PrefKeys.token.name)!;
     Uri uri = Uri.parse(ApiSettings.categories);
@@ -61,6 +64,21 @@ class StoreApiController{
       var dataJsonObject=json['list'] as List;
       return dataJsonObject
           .map((jsonObject) => Categories.fromJson(jsonObject)).toList();
+    }
+    return[];
+  }
+  Future<List<SubCategory>> getSubCategory({required int id}) async{
+    String token =SharedPrefController().getValueFor<String>( PrefKeys.token.name)!;
+    Uri uri = Uri.parse(ApiSettings.categories +'/$id');
+    var response= await http.get(uri,headers: {
+      HttpHeaders.authorizationHeader : token,
+      HttpHeaders.acceptHeader:'application/json'
+
+    });
+    if(response.statusCode == 200  ){
+      var json=jsonDecode(response.body);
+      var dataJsonObject=json['list'] as List;
+      return dataJsonObject.map((jsonObject) => SubCategory.fromJson(jsonObject)).toList();
     }
     return[];
   }

@@ -9,7 +9,7 @@ import '../api/controllers/category_api_controller.dart';
 import '../models/sub_category.dart';
 
 class CategoryGetxController extends GetxController {
-  final CategoryApiController categoryApiController = CategoryApiController();
+  CategoryApiController categoryApiController = CategoryApiController();
   RxList<Categories> categories = <Categories>[].obs;
   RxList<SubCategory> subCategories = <SubCategory>[].obs;
   RxBool loading = false.obs;
@@ -18,13 +18,12 @@ class CategoryGetxController extends GetxController {
 
   void onInit() {
     getCategory();
-
     super.onInit();
   }
 
   Future<void> getCategory() async {
     loading.value = true;
-    categories.value = await categoryApiController.getCategory();
+    categories.value = await categoryApiController.getCategories();
     loading.value = false;
     update();
   }
@@ -36,5 +35,7 @@ class CategoryGetxController extends GetxController {
     loading.value = false;
     update();
   }
+
+
 
 }

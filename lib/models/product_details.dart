@@ -14,7 +14,7 @@ class ProductDetails{
   late double? offerPrice;
   late bool isFavorite;
   late String imageUrl;
-  late List<ProductImages> images;
+  late List<ProductImages>? images;
   late SubCategory? subCategory;
 
   ProductDetails();
@@ -36,7 +36,7 @@ class ProductDetails{
     if (json['images'] != null) {
       images = <ProductImages>[];
       json['images'].forEach((v) {
-        images.add(new ProductImages.fromJson(v));
+        images!.add(new ProductImages.fromJson(v));
       });
     }
     subCategory = json['sub_category'] != null

@@ -32,7 +32,7 @@ class MainScreenWidget extends StatelessWidget {
                     child: ListView(
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        HeaderPage(images: controller.home!.slider),
+                        HeaderPage<MySlider>(images: controller.home!.slider),
                         SizedBox(
                           height: 30.h,
                         ),
@@ -99,12 +99,8 @@ class MainScreenWidget extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return CustomProduct(
-                                image: 'images/shirt.png',
-                                text: 'Jacket Pullover Sweat Hoodie',
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, '/product_screen');
-                                },
+                                product: controller.home!.latestProducts[index],
+
                                 margin: EdgeInsets.only(
                                     right: SharedPrefController()
                                                 .getValueFor<String>(
@@ -120,7 +116,7 @@ class MainScreenWidget extends StatelessWidget {
                                         : 0.w),
                               );
                             },
-                            itemCount: 10,
+                            itemCount: controller.home!.latestProducts.length,
                           ),
                         ),
                         SizedBox(
@@ -138,12 +134,7 @@ class MainScreenWidget extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return CustomProduct(
-                                image: 'images/shirt.png',
-                                text: 'Jacket Pullover Sweat Hoodie',
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, '/product_screen');
-                                },
+                                product: controller.home!.famousProducts[index],
                                 margin: EdgeInsets.only(
                                     right: SharedPrefController()
                                                 .getValueFor<String>(
@@ -159,7 +150,7 @@ class MainScreenWidget extends StatelessWidget {
                                         : 0.w),
                               );
                             },
-                            itemCount: 10,
+                            itemCount:  controller.home!.latestProducts.length,
                           ),
                         ),
                       ],

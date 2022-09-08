@@ -1,10 +1,11 @@
+import 'package:database_app/models/product.dart';
 import 'package:database_app/models/product_details.dart';
 
 class Home {
   late List<MySlider> slider;
   late List<Categories> categories;
-  late List<ProductDetails> latestProducts;
-  late List<ProductDetails> famousProducts;
+  late List<Product> latestProducts;
+  late List<Product> famousProducts;
   Home();
 
   Home.fromJson(Map<String, dynamic> json) {
@@ -21,15 +22,15 @@ class Home {
       });
     }
     if (json['latest_products'] != null) {
-      latestProducts = <ProductDetails>[];
+      latestProducts = <Product>[];
       json['latest_products'].forEach((v) {
-        latestProducts.add(ProductDetails.fromJson(v));
+        latestProducts.add(Product.fromJson(v));
       });
     }
     if (json['famous_products'] != null) {
-      famousProducts = <ProductDetails>[];
+      famousProducts = <Product>[];
       json['famous_products'].forEach((v) {
-        famousProducts.add(ProductDetails.fromJson(v));
+        famousProducts.add(Product.fromJson(v));
       });
     }
   }

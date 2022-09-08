@@ -23,16 +23,17 @@ class DbController {
     String path = join(directory.path, 'app_db.sql');
     _database = await openDatabase(
       path,
-      version:1,
+      version:3,
       onOpen: (Database database) {},
+
       onCreate: (Database database , int version) async{
-        await database.execute('CREATE TABLE users ('
+        await database.execute('CREATE TABLE IF NOT EXISTS users('
             'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
             'name TEXT NOT NULL,'
             'email TEXT NOT NULL,'
             'password TEXT NOT NULL'
         ' )');
-        await database.execute('CREATE TABLE products ('
+        await database.execute('CREATE TABLE IF NOT EXISTS products('
             'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
             'name TEXT NOT NULL,'
             'info TEXT NOT NULL,'
@@ -43,20 +44,50 @@ class DbController {
 
 
             ' )');
-        await database.execute('CREATE TABLE cart ('
+        await database.execute('CREATE TABLE IF NOT EXISTS cart('
             'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
             'total REAL NOT NULL,'
             'count INTEGER NOT NULL,'
             'price REAL NOT NULL,'
             'user_id INTEGER,'
             'product_id INTEGER,'
+            'product_name Text,'
             'FOREIGN KEY (user_id) references users (id),'
             'FOREIGN KEY (product_id) references products (id)'
-
             ' )');
 
       },
-      onUpgrade: (Database database , int oldVersion , int newVersion){},
+      onUpgrade: (Database database , int oldVersion , int newVersion) async{
+        await database.execute('CREATE TABLE IF NOT EXISTS users('
+            'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
+            'name TEXT NOT NULL,'
+            'email TEXT NOT NULL,'
+            'password TEXT NOT NULL'
+            ' )');
+        await database.execute('CREATE TABLE IF NOT EXISTS products('
+            'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
+            'name TEXT NOT NULL,'
+            'info TEXT NOT NULL,'
+            'price REAL NOT NULL,'
+            'quantity INTEGER DEFAULT (0),'
+            'user_id INTEGER,'
+            'FOREIGN KEY (user_id) references users (id)'
+
+
+            ' )');
+        await database.execute('CREATE TABLE IF NOT EXISTS cart('
+            'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
+            'total REAL NOT NULL,'
+            'count INTEGER NOT NULL,'
+            'price REAL NOT NULL,'
+            'user_id INTEGER,'
+            'product_id INTEGER,'
+            'product_name Text,'
+            'product_image Text,'
+            'FOREIGN KEY (user_id) references users (id),'
+            'FOREIGN KEY (product_id) references products (id)'
+            ' )');
+      },
       onDowngrade: (Database database , int oldVersion , int newVersion){},
     );
 
