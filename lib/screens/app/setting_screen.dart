@@ -157,7 +157,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       child: _buildProfileSeting(
                           icon: Icon(Icons.language),
                           title: context.localizations.language,
-                          subTitle: SharedPrefController().getValueFor<String>(PrefKeys.language.name)=='ar'?'Arabic' :'English'!
+                          subTitle: SharedPrefController().getValueFor<String>(PrefKeys.language.name)=='ar'?'Arabic' :'English'
                           ,
                       actionIcon: IconButton(icon: Icon(Icons.mode_edit_outline_outlined),
                         color: Color(0xffFF7750) ,onPressed: (){

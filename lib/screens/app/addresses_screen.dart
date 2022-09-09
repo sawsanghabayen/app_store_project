@@ -2,18 +2,42 @@ import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/app_text.dart';
 import 'package:database_app/widgets/icon_with_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../getx/address_getx_controller.dart';
+import '../../models/address.dart';
 import '../../models/process_response.dart';
 
-class AddressesScreen extends StatelessWidget {
+class AddressesScreen extends StatefulWidget {
    AddressesScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AddressesScreen> createState() => _AddressesScreenState();
+}
+
+class _AddressesScreenState extends State<AddressesScreen> {
   AddressGetxController controller=Get.put(AddressGetxController());
+int indexCurrent=0;
+int i=0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      controller.getAddresses();
+
+
+    });
+    super.initState();
+  }
+  bool isPressed=false;
+  List<Address> list=[];
   @override
   Widget build(BuildContext context) {
+  // Color borderColor =;
     return Scaffold(
       backgroundColor: Color(0xFFFAFAFA),
       appBar: AppBar(
@@ -47,7 +71,6 @@ class AddressesScreen extends StatelessWidget {
                       return Dismissible(
                         key: UniqueKey(),
                         onDismissed: (direction) async {
-                          // print(controller.addresses[index].id!);
                           ProcessResponse process =
                           await controller.deleteAddress(controller.addresses[index].id!);
                           context.showSnackBar(
@@ -55,48 +78,59 @@ class AddressesScreen extends StatelessWidget {
                               error: !process.success);
                         },
                         background: Container(color: Colors.red),
-                        child: Container(
-                          padding: EdgeInsets.all(11),
-                          margin: EdgeInsets.only(bottom: 20.h),
-                          child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    AppText(
-                                        text: controller
-                                            .addresses[index].name!,
-                                        fontSize: 13.sp,
-                                        color: Color(0xFF8992A3)),
-                                    // Spacer(),
-                                    IconButton(
-                                      onPressed: () {},
-                                      padding: EdgeInsets.all(0),
-                                      icon: Icon(Icons.more_horiz),
-                                    ),
-                                  ],
-                                ),
-                                IconWithText(
-                                    text: controller
-                                        .addresses[index].city!.nameEn!,
-                                    icon: Icon(Icons.location_city)),
-                                IconWithText(
-                                    text:
-                                    controller.addresses[index].info!,
-                                    icon: Icon(Icons.location_pin)),
-                                IconWithText(
-                                    text: controller
-                                        .addresses[index].contactNumber!,
-                                    icon: Icon(Icons.call)),
-                              ]),
-                          height: 144.h,
-                          width: 343.w,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.r),
-                            color: Colors.white,
+                        child: InkWell(
+                          onTap: () async{
+                            indexCurrent=index;
+                            // isPressed =!isPressed;
+                            controller.addAddress(controller.addresses.value[index]);
+                            Navigator.pop(context,);
+                            setState((){});
+
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(11),
+                            margin: EdgeInsets.only(bottom: 20.h),
+                            child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      AppText(
+                                          text: controller
+                                              .addresses[index].name!,
+                                          fontSize: 13.sp,
+                                          color: Color(0xFF8992A3)),
+                                      // Spacer(),
+                                      IconButton(
+                                        onPressed: () {},
+                                        padding: EdgeInsets.all(0),
+                                        icon: Icon(Icons.more_horiz),
+                                      ),
+                                    ],
+                                  ),
+                                  IconWithText(
+                                      text: controller
+                                          .addresses[index].city!.nameEn!,
+                                      icon: Icon(Icons.location_city)),
+                                  IconWithText(
+                                      text:
+                                      controller.addresses[index].info!,
+                                      icon: Icon(Icons.location_pin)),
+                                  IconWithText(
+                                      text: controller
+                                          .addresses[index].contactNumber!,
+                                      icon: Icon(Icons.call)),
+                                ]),
+                            height: 144.h,
+                            width: 343.w,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.r),
+                              color: Colors.white,
+                              border: (indexCurrent == index) ? Border.all(color: Colors.red) :Border.all(color: Colors.white)
+                            ),
                           ),
                         ),
                       );
@@ -111,5 +145,11 @@ class AddressesScreen extends StatelessWidget {
       ),
     );
   }
+
+  // onContainerPressed(int index){
+  //   for(int i=0;i<controller.addresses.value.length; i++ ){
+  //     if(controller.addresses.value[index].){}
+  //   }
+  // }
 }
 

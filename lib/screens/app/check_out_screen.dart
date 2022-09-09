@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:database_app/getx/address_getx_controller.dart';
 import 'package:database_app/getx/cart_getx_controller.dart';
 import 'package:database_app/getx/order_getx_controller.dart';
+import 'package:database_app/models/address.dart';
 import 'package:database_app/models/process_response.dart';
 import 'package:database_app/screens/app/addresses_screen.dart';
+import 'package:database_app/screens/app/home_screen.dart';
 import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/app_text.dart';
 import 'package:database_app/widgets/icon_with_text.dart';
@@ -12,19 +15,43 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CheckOutScreen extends StatelessWidget {
-   CheckOutScreen({Key? key}) : super(key: key);
-  CartGetxController cartGetxController=Get.put<CartGetxController>(CartGetxController());
-  OrderGetxController orderGetxController=Get.put<OrderGetxController>(OrderGetxController());
-  List<Map<String,dynamic>> list=[];
-  // CartGetxController cartGetxController=Get.put<CartGetxController>(CartGetxController());
+class CheckOutScreen extends StatefulWidget {
+  CheckOutScreen({Key? key}) : super(key: key);
 
+  @override
+  State<CheckOutScreen> createState() => _CheckOutScreenState();
+}
+
+class _CheckOutScreenState extends State<CheckOutScreen> {
+  CartGetxController cartGetxController =
+      Get.put<CartGetxController>(CartGetxController());
+
+  OrderGetxController orderGetxController =
+      Get.put<OrderGetxController>(OrderGetxController());
+
+  AddressGetxController addressGetxController =
+      Get.put<AddressGetxController>(AddressGetxController());
+
+  List<Address> list = [];
+
+  late Address address;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    addressGetxController.getAddresses();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AppText(text: 'Checkout', fontSize: 20.sp, color: Colors.black,fontWeight: FontWeight.bold),
+        title: AppText(
+            text: 'Checkout',
+            fontSize: 20.sp,
+            color: Colors.black,
+            fontWeight: FontWeight.bold),
         backgroundColor: Colors.white,
         elevation: 2.5,
       ),
@@ -32,62 +59,141 @@ class CheckOutScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
         child: Column(
           children: [
-            Expanded(flex: 2,
+            Expanded(
+              flex: 2,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-
-                  _buildType(name: 'Address', onPress: () {
-                    Get.to((){
-                    return   AddressesScreen();
-                    });
-                    // Navigator.pushNamed(context, '/addresses_screen');
-                  }, text: 'Change'),
+                  _buildType(
+                      name: 'Address',
+                      onPress: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return AddressesScreen();
+                            },
+                          ),
+                        );
+                      },
+                      text: 'Change'),
                   SizedBox(
                     height: 15.h,
                   ),
-                  Container(
-                    padding: EdgeInsets.all(11),
-                    margin: EdgeInsets.only(bottom: 20.h),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              AppText(
-                                  text: 'Home',
-                                  fontSize: 13.sp,
-                                  color: Color(0xFF8992A3)),
+                  SizedBox(
+                    height: 150.h,
+                    child: GetBuilder<AddressGetxController>(
+                      builder: (controller) {
+                        if (controller.addressRx.value.name == null) {
+                          List<Address> address = controller.addresses.value;
 
-                            ],
-                          ),
-                          IconWithText(
-                              text: '680 Mowe Court, New York, US',
-                              icon: Icon(Icons.location_pin)),
-                          IconWithText(
-                              text: 'Sophia Benson', icon: Icon(Icons.person)),
-                          IconWithText(
-                              text: '+1(368)68 000 068', icon: Icon(Icons.call)),
-                        ]),
-                    height: 144.h,
-                    width: 343.w,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.r),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.shade300,
-                            offset: Offset(0, 10),
-                            blurRadius: 5)
-                      ],
-                      color: Colors.white,
+                          /**
+                           *  list.firstWhere((element) => element.contains(''),
+                              orElse: () => 'No matching color found');
+                           */
+                          return controller.loading.value
+                              ? CircularProgressIndicator()
+                              : Container(
+                                  padding: EdgeInsets.all(11),
+                                  margin: EdgeInsets.only(bottom: 20.h),
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            AppText(
+                                                text: address[0].name!,
+                                                fontSize: 13.sp,
+                                                color: Color(0xFF8992A3)),
+                                          ],
+                                        ),
+                                        IconWithText(
+                                            text: address[0].city!.nameEn!,
+                                            icon: Icon(Icons.location_city)),
+                                        IconWithText(
+                                            text: address[0].info!,
+                                            icon: Icon(Icons.location_pin)),
+                                        IconWithText(
+                                            text: address[0].contactNumber!,
+                                            icon: Icon(Icons.call)),
+                                      ]),
+                                  height: 144.h,
+                                  width: 343.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey.shade300,
+                                          offset: Offset(0, 10),
+                                          blurRadius: 5)
+                                    ],
+                                    color: Colors.white,
+                                  ),
+                                );
+                        } else {
+                          return Container(
+                            padding: EdgeInsets.all(11),
+                            margin: EdgeInsets.only(bottom: 20.h),
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      AppText(
+                                          text: controller
+                                              .selectedAddress()
+                                              .name!,
+                                          fontSize: 13.sp,
+                                          color: Color(0xFF8992A3)),
+                                    ],
+                                  ),
+                                  IconWithText(
+                                      text: controller
+                                          .selectedAddress()
+                                          .city!
+                                          .nameEn!,
+                                      icon: Icon(Icons.location_city)),
+                                  IconWithText(
+                                      text: controller.selectedAddress().info!,
+                                      icon: Icon(Icons.location_pin)),
+                                  IconWithText(
+                                      text: controller
+                                          .selectedAddress()
+                                          .contactNumber!,
+                                      icon: Icon(Icons.call)),
+                                ]),
+                            height: 144.h,
+                            width: 343.w,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.r),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey.shade300,
+                                    offset: Offset(0, 10),
+                                    blurRadius: 5)
+                              ],
+                              color: Colors.white,
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                   SizedBox(
                     height: 20.h,
                   ),
-                  _buildType(name: 'Payment', onPress: () {}, text: 'Change'),
+                  _buildType(
+                      name: 'Payment',
+                      onPress: () {
+                        print(list);
+                      },
+                      text: 'Change'),
                   SizedBox(
                     height: 15.h,
                   ),
@@ -97,7 +203,6 @@ class CheckOutScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-
                         children: [
                           Icon(
                             Icons.paypal,
@@ -125,7 +230,6 @@ class CheckOutScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -135,18 +239,18 @@ class CheckOutScreen extends StatelessWidget {
                 height: 279.h,
                 width: 325.w,
                 decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.shade300,
-                          offset: Offset(10, 10),
-                          blurRadius: 5)
-                    ],
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.shade300,
+                        offset: Offset(10, 10),
+                        blurRadius: 5)
+                  ],
                   borderRadius: BorderRadius.circular(20.r),
                   color: Color(0xFFFFFFFF),
                 ),
                 child: Padding(
                   padding:
-                  EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
+                      EdgeInsets.symmetric(vertical: 15.h, horizontal: 15.w),
                   child: Column(children: [
                     Row(
                       children: [
@@ -156,7 +260,7 @@ class CheckOutScreen extends StatelessWidget {
                             color: Color(0xFF3E3E3E)),
                         Spacer(),
                         AppText(
-                            text: '\$553',
+                            text: '\$${cartGetxController.getTotla()}',
                             fontSize: 14.sp,
                             color: Color(0xFF3E3E3E)),
                       ],
@@ -172,7 +276,7 @@ class CheckOutScreen extends StatelessWidget {
                             color: Color(0xFF3E3E3E)),
                         Spacer(),
                         AppText(
-                            text: '\$3.29',
+                            text: '\$0.0',
                             fontSize: 14.sp,
                             color: Color(0xFF3E3E3E)),
                       ],
@@ -193,7 +297,7 @@ class CheckOutScreen extends StatelessWidget {
                         ),
                         Spacer(),
                         AppText(
-                            text: '\$556.29',
+                            text: '\$${cartGetxController.getTotla()}',
                             fontSize: 17.sp,
                             color: Color(0xFF3E3E3E),
                             fontWeight: FontWeight.bold),
@@ -201,8 +305,18 @@ class CheckOutScreen extends StatelessWidget {
                     ),
                     Spacer(),
                     ElevatedButton(
-                        onPressed: ()async {
-                          OrderGetxController.to.create(CartGetxController.to.cartItems.value, 'Cash', 605);
+                        onPressed: () async {
+                          int id = addressGetxController.addressRx.value.name ==
+                                  null
+                              ? addressGetxController.addresses.value.first.id!
+                              : addressGetxController.addressRx.value.id!;
+                          ProcessResponse process=await OrderGetxController.to.create(
+                              CartGetxController.to.cartItems.value,
+                              'Cash',
+                              id);
+                          _showSuccessConfirmOrder(text:process.message,);
+                          // context.showSnackBar(message: process.message,error: !process.success);
+
                         },
                         style: ElevatedButton.styleFrom(
                             minimumSize: Size(315.w, 58.83.h),
@@ -254,6 +368,59 @@ class CheckOutScreen extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  void _showSuccessConfirmOrder({required String text}) async {
+   await showDialog<bool>(
+        barrierDismissible: false,
+        barrierColor: Color(0xFF3E3E3E).withOpacity(0.8),
+        context: context,
+        builder: (context) {
+          return ShowSuccess(text: text);
+        });
+
+  }
+
+}
+class ShowSuccess extends StatelessWidget {
+  CartGetxController controller=Get.put<CartGetxController>(CartGetxController());
+  final String text;
+   ShowSuccess({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      // titlePadding: ,
+      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20)),
+      title: Column(
+          children:[
+            SizedBox(height: 20.h,),
+            Image.asset('images/succsess.png'),
+            // Icon(Icons.check_circle ,size: 58, color:Colors.green,),
+            SizedBox(height: 20.h,),
+            Text(
+              text,
+              style: GoogleFonts.nunito( fontSize: 14.sp, color: Color(0xFF3E3E3E), fontWeight: FontWeight.bold ,),
+              textAlign:TextAlign.center,
+            ),
+            SizedBox(height: 10.h,),
+            ElevatedButton(onPressed: (){
+              // print('a');
+              controller.clear();
+              Get.offAll(HomeScreen());
+          }, child: Text('Ok'),
+            ),
+            SizedBox(height: 20.h,),
+
+
+
+          ]
+      ),
+
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:database_app/models/process_response.dart';
+import 'package:database_app/screens/app/addresses_screen.dart';
 import 'package:database_app/screens/app/home_screen.dart';
 import 'package:database_app/screens/widgets/app_text_field.dart';
 import 'package:database_app/utils/context_extension.dart';
@@ -294,7 +295,8 @@ class _NewAddressScreenState extends State<NewAddressScreen> {
                       )
                   );
                   context.showSnackBar(message: process.message,error: !process.success);
-                  Get.off(HomeScreen());
+                  // Navigator.pop(context);
+                  Get.off(AddressesScreen());
                 },
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(325.w, 63.83.h),

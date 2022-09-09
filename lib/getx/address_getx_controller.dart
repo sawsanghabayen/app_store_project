@@ -10,13 +10,14 @@ class AddressGetxController extends GetxController {
   AddressApiController addressApiController = AddressApiController();
   RxList<Address> addresses = <Address>[].obs;
   RxList<City> cities = <City>[].obs;
+  Rx<Address> addressRx=Address().obs;
   RxBool loading = false.obs;
 
   static AddressGetxController get to => Get.find<AddressGetxController>();
 
   void onInit() {
-    getCities();
     getAddresses();
+    getCities();
     super.onInit();
   }
   Future<ProcessResponse> createAddress(String name,
@@ -31,6 +32,7 @@ class AddressGetxController extends GetxController {
   }
 
   Future<void> getAddresses() async {
+    print('hussen');
     loading.value = true;
     addresses.value = await addressApiController.getAddresses();
     loading.value = false;
@@ -65,6 +67,14 @@ class AddressGetxController extends GetxController {
     update();
     return processResponse;
 
+  }
+
+ void  addAddress(Address address){
+    addressRx.value=address;
+    update();
+  }
+  Address selectedAddress(){
+    return addressRx.value;
   }
 
   ProcessResponse getResponse(bool success,

@@ -55,13 +55,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(     /*هنا عشان نحدد حجم الشاشة*/
     designSize:const Size(375, 812) ,
+
       builder: (context, child) {
         return GetX<LanguageGetxController>(
           init: LanguageGetxController(),
           global: true,
+
        // create: (context)=>LanguageProvider(),
          builder:( LanguageGetxController controller){
+
            return  MaterialApp(
+
              theme: ThemeData(
                  colorScheme: ThemeData().colorScheme.copyWith(
                    primary: Color(0xffFF7750),
@@ -120,9 +124,10 @@ class MyApp extends StatelessWidget {
                '/about_us_screen': (context) => const AboutUsScreen(),
                '/change_mobile_screen': (context) => const ChangeMobileScreen(),
              },
-
+             navigatorKey: Get.key,
            );
          },
+
        );
     },);
   }
