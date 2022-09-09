@@ -46,12 +46,19 @@
 "favorite":"Favorite",
 "categories":"Categories",
 
-"cart_count_items":"عناصر",
-"cart_sub_total":"المجموع الفرعي",
-"cart_total":"المجموع الكلي",
-"cart_submit":"Cart Submit"
+"cart_count_items":"items",
+"cart_sub_total":"Sub Total",
+"cart_total":"Total",
+"cart_submit":"Cart Submit",
 
-
+"profile_setting":"Profile setting",
+"profile":"Profile",
+"edit_mobile":"Edit Mobile",
+"language":"Language",
+"change_pass":"Change Password",
+"contact_us":"Contact Us",
+"about_us":"About Us",
+"logout":"Logout"
 
 
 

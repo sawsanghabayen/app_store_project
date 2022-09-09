@@ -11,5 +11,6 @@ class ApiSettings {
   static const String detailsproducts='${_basedUrl}products';
   static const String order='${_basedUrl}orders';
   static const String addresses='${_basedUrl}addresses';
+  static const String contact='${_basedUrl}contact-requests';
   static const String favoriteproducts='${_basedUrl}favorite-products';
 }

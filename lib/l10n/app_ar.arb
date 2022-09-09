@@ -48,8 +48,15 @@
 "cart_count_items":"عناصر",
 "cart_sub_total":"المجموع الفرعي",
 "cart_total":"المجموع الكلي",
-"cart_submit":"تسوق الان"
+"cart_submit":"تسوق الان",
 
-
+"profile_setting":"إعداد الملف الشخصي",
+"profile":"الملف الشخصي",
+"edit_mobile":"تعديل رقم الجوال",
+"language":"اللغة",
+"change_pass":"تغيير كلمة المرور",
+"contact_us":"تواصل معنا",
+"About_us":"عن التطبيق",
+"logout":"تسجيل خروج"
 
 }

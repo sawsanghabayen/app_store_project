@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../prefs/shared_pref_controller.dart';
-import '../../provider/language_provider.dart';
+import '../../getx/language_getx_controller.dart';
 
 
 class SettingScreen extends StatefulWidget {
@@ -76,11 +76,13 @@ class _SettingScreenState extends State<SettingScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppText(
-                          text: 'Madbrains',
+                          text: SharedPrefController()
+                              .getValueFor<String>(PrefKeys.name.name)!,
                           fontSize: 18.sp,
                           color: Colors.black),
                       AppText(
-                          text: '+972 59 7085978',
+                          text: SharedPrefController()
+                              .getValueFor<String>(PrefKeys.mobile.name)!,
                           fontSize: 12.sp,
                           color: Color(0xff36596A)),
                     ],
@@ -112,7 +114,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     AppText(
-                        text: 'Profile setting',
+                        text:  context.localizations.profile_setting,
                         fontSize: 18.sp,
                         color: Color(0xff36596A)),
                     // SizedBox(height: 10.h,),
@@ -122,8 +124,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       },
                       child: _buildProfileSeting(
                           icon: Icon(Icons.person),
-                          title: 'Profile',
-                          subTitle: 'Ethical Hacking ',
+                          title: context.localizations.profile,
+                          subTitle: SharedPrefController()
+                              .getValueFor<String>(PrefKeys.name.name)!,
                           actionIcon: IconButton(icon: Icon(Icons.mode_edit_outline_outlined),
                             color: Color(0xffFF7750) ,onPressed: (){
                               Navigator.pushNamed(context, '/edit_profile_screen');
@@ -136,7 +139,7 @@ class _SettingScreenState extends State<SettingScreen> {
                       },
                       child: _buildProfileSeting(
                           icon: Icon(Icons.phone),
-                          title: 'Edit Mobile',
+                          title: context.localizations.edit_mobile,
                           subTitle: 'Last update (19/8/2020)',
                           actionIcon: IconButton(icon: Icon(Icons.mode_edit_outline_outlined),
                             color: Color(0xffFF7750) ,onPressed: (){
@@ -153,8 +156,9 @@ class _SettingScreenState extends State<SettingScreen> {
                       },
                       child: _buildProfileSeting(
                           icon: Icon(Icons.language),
-                          title: 'Language',
-                          subTitle: 'English',
+                          title: context.localizations.language,
+                          subTitle: SharedPrefController().getValueFor<String>(PrefKeys.language.name)=='ar'?'Arabic' :'English'!
+                          ,
                       actionIcon: IconButton(icon: Icon(Icons.mode_edit_outline_outlined),
                         color: Color(0xffFF7750) ,onPressed: (){
                         _showLangaugeBottomSheet();
@@ -168,7 +172,7 @@ class _SettingScreenState extends State<SettingScreen> {
                         },
                         child: _buildProfileSeting(
                             icon: Icon(Icons.lock),
-                            title: 'Change password',
+                            title: context.localizations.change_pass,
                             subTitle: 'Last update (19/8/2020)',
                             actionIcon: IconButton(icon: Icon(Icons.mode_edit_outline_outlined),
                               color: Color(0xffFF7750) ,onPressed: (){
@@ -202,7 +206,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   AppText(
-                                      text: 'Contact Us',
+                                      text: context.localizations.contact_us,
                                       fontSize: 14.sp,
                                       color: Color(0xff36596A)),
                                 ],
@@ -250,7 +254,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   AppText(
-                                      text: 'About Us',
+                                      text: context.localizations.about_us,
                                       fontSize: 14.sp,
                                       color: Color(0xff36596A)),
                                 ],
@@ -290,7 +294,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
                     child: AppText(
 
-                        text: 'Logout',
+                        text: context.localizations.logout,
                         fontSize: 14.sp,
                         color: Color(0xff36596A)),
                     onTap: () async{
@@ -393,7 +397,7 @@ class _SettingScreenState extends State<SettingScreen> {
         });
     if (langCode != null) {
       Future.delayed(Duration(milliseconds: 500), () {
-        Provider.of<LanguageProvider>(context, listen: false).changeLanguage();
+        LanguageGetxController.to.changeLanguage();
       });
     }
   }

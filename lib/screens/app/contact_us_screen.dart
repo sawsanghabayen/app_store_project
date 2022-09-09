@@ -1,8 +1,11 @@
 import 'package:database_app/screens/widgets/app_text_field.dart';
+import 'package:database_app/utils/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../api/controllers/contact_api_controller.dart';
+import '../../models/process_response.dart';
 import '../../widgets/app_text.dart';
 
 class ContactUsScreen extends StatefulWidget {
@@ -13,22 +16,19 @@ class ContactUsScreen extends StatefulWidget {
 }
 
 class _ContactUsScreenState extends State<ContactUsScreen> {
-  late TextEditingController _nameTextController;
-  late TextEditingController _emailTextController;
+  late TextEditingController _subjectTextController;
   late TextEditingController _messageTextController;
 
   @override
   void initState() {
     super.initState();
-    _nameTextController = TextEditingController();
-    _emailTextController = TextEditingController();
+    _subjectTextController = TextEditingController();
     _messageTextController = TextEditingController();
 
   }
   @override
   void dispose() {
-    _nameTextController.dispose();
-    _emailTextController.dispose();
+    _subjectTextController.dispose();
     _messageTextController.dispose();
 
     super.dispose();
@@ -67,7 +67,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
             child: Padding(
               padding:  EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                 AppText(text: 'Get in touch', fontSize: 24.sp,
                   color: Color(0xFF3E3E3E),
@@ -75,39 +75,13 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 // SizedBox(height: 15.h,),
                 TextField(
                   autofocus: true,
-                  controller: _nameTextController,
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                        horizontal: 14.w, vertical: 15.h),
-                    prefixIcon: Icon(Icons.person),
-                    hintText: 'Holder Name',
-                    hintStyle: GoogleFonts.nunito(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xFFCACACA)),
-                    hintMaxLines: 1,
-                    // prefixIcon: Icon(prefixIcon),
-                    // suffixIcon: Icon(Icons.) ,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50.r),
-                      borderSide: BorderSide(color: Color(0xFFEDF1F7)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50.r),
-                      borderSide: BorderSide(color: Color(0xFFFF7750)),
-                    ),
-                  ),
-                ),
-                TextField(
-                  autofocus: true,
-                  controller: _emailTextController,
+                  controller: _subjectTextController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
                         horizontal: 14.w, vertical: 15.h),
-                    prefixIcon: Icon(Icons.mail),
-                    hintText: 'Email',
+                    prefixIcon: Icon(Icons.message),
+                    hintText: 'Subject',
                     hintStyle: GoogleFonts.nunito(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w400,
@@ -159,8 +133,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 ),
                     ElevatedButton(
                         onPressed: () {
-                          // print(_emailTextController.text);
-                          // print(_passwordTextController.text);
+                          _performContact();
+
                           Navigator.pushReplacementNamed(context, '/');
                           // _performLogin();
                         },
@@ -187,5 +161,30 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       ),
 
     );
+  }
+
+
+  void _performContact() {
+    if (_checkData()) {
+      _contact();
+    }
+  }
+  bool _checkData() {
+    if (_subjectTextController.text.isNotEmpty &&_messageTextController.text.isNotEmpty) {
+      return true;
+    }
+    context.showSnackBar( message: 'Enter Required Data!', error: true);
+    return false;
+  }
+
+  void _contact() async {
+
+    ProcessResponse processResponse =await ContactApiController().contact(subject: _subjectTextController.text
+        , message: _messageTextController.text);
+    if(processResponse.success){
+      Navigator.pop(context);
+      context.showSnackBar(message: processResponse.message ,error: !processResponse.success);
+
+    }
   }
 }

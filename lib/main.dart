@@ -1,6 +1,6 @@
 import 'package:database_app/database/db_controller.dart';
 import 'package:database_app/prefs/shared_pref_controller.dart';
-import 'package:database_app/provider/language_provider.dart';
+import 'package:database_app/getx/language_getx_controller.dart';
 import 'package:database_app/screens/app/about_us_screen.dart';
 import 'package:database_app/screens/app/addresses_screen.dart';
 import 'package:database_app/screens/app/cart_screen.dart';
@@ -34,6 +34,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -41,11 +43,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();/*   هنا MyApp رح يستنى لحد يجهز الشيرد بريفيرنس*/
   await SharedPrefController().initPreferences();
   await DbController().initDatabase();
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  /*const*/ MyApp({Key? key}) : super(key: key);
+  LanguageGetxController controller =Get.put<LanguageGetxController>(LanguageGetxController());
   final String message='';
 
   @override
@@ -53,10 +56,12 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(     /*هنا عشان نحدد حجم الشاشة*/
     designSize:const Size(375, 812) ,
       builder: (context, child) {
-       return ChangeNotifierProvider<LanguageProvider>(  /*       هنا عشان يعمم ويغير بنفس الوقت*/
-       create: (context)=>LanguageProvider(),
-         builder:(BuildContext context, Widget? child){
-           return  GetMaterialApp(
+        return GetX<LanguageGetxController>(
+          init: LanguageGetxController(),
+          global: true,
+       // create: (context)=>LanguageProvider(),
+         builder:( LanguageGetxController controller){
+           return  MaterialApp(
              theme: ThemeData(
                  colorScheme: ThemeData().colorScheme.copyWith(
                    primary: Color(0xffFF7750),
@@ -83,7 +88,7 @@ class MyApp extends StatelessWidget {
              //   Locale('en'),
              // ],
              supportedLocales: AppLocalizations.supportedLocales,
-             locale:  Locale(Provider.of<LanguageProvider>(context).language),
+             locale:  Locale(controller.language.value),
              debugShowCheckedModeBanner: false,
              initialRoute: '/launch_screen',
              routes: {

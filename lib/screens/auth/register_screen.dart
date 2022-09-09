@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../models/city.dart';
 import '../../models/user.dart';
-import '../../provider/language_provider.dart';
+import '../../getx/language_getx_controller.dart';
 import '../../widgets/app_text.dart';
 
 class RegisterScreen extends StatefulWidget {
