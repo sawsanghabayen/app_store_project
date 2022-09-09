@@ -1,11 +1,14 @@
+import 'package:database_app/api/controllers/users_api_controller.dart';
 import 'package:database_app/database/controllers/user_db_controller.dart';
 import 'package:database_app/models/process_response.dart';
 import 'package:database_app/prefs/shared_pref_controller.dart';
+import 'package:database_app/screens/app/home_screen.dart';
 import 'package:database_app/screens/widgets/app_text_field.dart';
 import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +24,7 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> with Helpers {
+  late TextEditingController _mobileTextController;
   late TextEditingController _verificationCodeTextController;
 
   bool _obsecure = true;
@@ -31,12 +35,14 @@ class _VerificationScreenState extends State<VerificationScreen> with Helpers {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _mobileTextController = TextEditingController();
     _verificationCodeTextController = TextEditingController();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    _mobileTextController.dispose();
     _verificationCodeTextController.dispose();
     super.dispose();
   }
@@ -66,12 +72,20 @@ class _VerificationScreenState extends State<VerificationScreen> with Helpers {
               height: 10.h,
             ),
             Text(
-              'Create Your Account',
+              'Activate Your Account',
               style: GoogleFonts.nunito(
                   fontSize: 22.sp,
                   color: const Color(0xff3E3E3E),
                   fontWeight: FontWeight.bold),
             ),
+            SizedBox(
+              height: 30.h,
+            ),
+            AppTextField(
+                hint: 'Mobile Number',
+                prefixIcon: Icons.verified,
+                keyboardType: TextInputType.number,
+                controller: _mobileTextController),
             SizedBox(
               height: 30.h,
             ),
@@ -84,7 +98,8 @@ class _VerificationScreenState extends State<VerificationScreen> with Helpers {
 
             const Spacer(),
             ElevatedButton(
-                onPressed: () {
+                onPressed: () async{
+                    _performActivate();
 
                 },
                 style: ElevatedButton.styleFrom(
@@ -126,4 +141,31 @@ class _VerificationScreenState extends State<VerificationScreen> with Helpers {
       ),
     );
   }
+
+
+  void _performActivate() async{
+    if (_checkData()) {
+      ProcessResponse process=await   _activate();
+      if(process.success){
+        Navigator.pushReplacementNamed(context, '/login_screen');
+      }
+      context.showSnackBar(message: process.message,error: !process.success);
+    }
+  }
+  bool _checkData() {
+    if (_verificationCodeTextController.text.isNotEmpty &&_mobileTextController.text.isNotEmpty) {
+      return true;
+    }
+    context.showSnackBar( message: 'Enter Required Data!', error: true);
+    return false;
+  }
+
+  Future<ProcessResponse> _activate() async {
+    ProcessResponse processResponse =await UsersApiController().activate(mobile: int.parse(_mobileTextController.text)
+        , code:int.parse(_verificationCodeTextController.text));
+    return processResponse;
+  }
+
+
+
 }

@@ -7,17 +7,21 @@ import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../getx/address_getx_controller.dart';
 import '../../models/city.dart';
 import '../../models/user.dart';
 import '../../getx/language_getx_controller.dart';
 import '../../widgets/app_text.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+   RegisterScreen({Key? key}) : super(key: key);
+
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -30,10 +34,12 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
   late TextEditingController _nameTextController;
   late TextEditingController _mobileTextController;
   late TextEditingController _cityTextController;
-  late Future<List<City>> _cities;
+  AddressGetxController controller = Get.put(AddressGetxController());
+
+  // late Future<List<City>> _cities;
 
   bool _obsecure = true;
-  late String? _gender;
+   String _gender='M';
   // late int _selectedCityId ;
   late int? _selectedCityId = 1;
 
@@ -41,7 +47,9 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
   void initState() {
     // TODO: implement initState
     super.initState();
-     _cities = UsersApiController().getCities();
+   // Future.delayed(Duration(seconds: 0),() {
+   //   controller.getCities();
+   // },);
     _emailTextController = TextEditingController();
     _passwordTextController = TextEditingController();
     _nameTextController = TextEditingController();
@@ -140,17 +148,8 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
               ),
             ),
             Container(
-              child: FutureBuilder<List<City>>(
-                future: _cities,
-                builder: (context, snapshot) {
-                  List data = snapshot.data! as List;
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    List<City> cities= snapshot.data! ;
-                    // List<City> cities=[];
-
-                    return DropdownButtonFormField<int>(
+              child:
+              DropdownButtonFormField<int>(
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                             //<-- SEE HERE
@@ -177,12 +176,17 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                         value: _selectedCityId,
                         selectedItemBuilder: (BuildContext context) {
                           return _selectedCityId != null
-                              ? cities
+                              ? controller.cities
                               .map((city) => DropdownMenuItem<int>(
-                            child: Text(SharedPrefController().getValueFor<String>('language')=='en'?cities
+                            child: Text(SharedPrefController()
+                                .getValueFor<String>('language') ==
+                                'en'
+                                ? controller.cities
                                 .firstWhere((element) =>
-                            element.id == _selectedCityId).nameEn! :
-                            cities.firstWhere((element) =>
+                            element.id == _selectedCityId)
+                                .nameEn!
+                                : controller.cities
+                                .firstWhere((element) =>
                             element.id == _selectedCityId)
                                 .nameAr!),
                             value: city.id,
@@ -190,94 +194,26 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                               .toList()
                               : [];
                         },
-                        items: cities
+                        items: controller.cities
                             .map((city) => DropdownMenuItem<int>(
-                          child: Text(SharedPrefController().getValueFor<String>('language')=='en'?city.nameEn!:city.nameAr!),
+                          child: Text(SharedPrefController()
+                              .getValueFor<String>('language') ==
+                              'en'
+                              ? city.nameEn!
+                              : city.nameAr!),
                           value: city.id,
                         ))
                             .toList(),
                         onChanged: (int? value) {
                           setState(() => _selectedCityId = value);
-                        });
-                    return Text('');
-                  } else {
-                    return Text('No Data');
-                  }
-                },
-              ),
-            ),
+                        }),
+                    // return Text('');
 
-            // Container(
-            //   child: FutureBuilder<List>(
-            //     future: _cities,
-            //     builder: (context, snapshot) {
-            //       List data = snapshot.data! as List;
-            //       if (snapshot.connectionState == ConnectionState.waiting) {
-            //         return CircularProgressIndicator();
-            //       } else if (snapshot.data!.isNotEmpty && snapshot != null) {
-            //         List data = snapshot.data!;
-            //         List<City> cities=[];
-            //         data.forEach((element) {
-            //           City demo =City.fromJson(element);
-            //           cities.add(demo);
-            //         });
-            //         return DropdownButtonFormField<int>(
-            //   decoration: InputDecoration(
-            //     enabledBorder: OutlineInputBorder(
-            //       //<-- SEE HERE
-            //       borderSide: BorderSide(
-            //         color: Color(0xFFEDF1F7),
-            //         width: 2,
-            //       ),
-            //       borderRadius: BorderRadius.circular(50.0),
-            //     ),
-            //     focusedBorder: OutlineInputBorder(
-            //       //<-- SEE HERE
-            //       borderSide: BorderSide(color: Color(0xFFFF7750), width: 2),
-            //       borderRadius: BorderRadius.circular(50.0),
-            //     ),
-            //   ),
-            //   // style: BorderRadius(),
-            //   hint: Text(
-            //     'Select City',
-            //     style: GoogleFonts.nunito(
-            //         fontSize: 16.sp,
-            //         fontWeight: FontWeight.w400,
-            //         color: Color(0xFFCACACA)),
-            //   ),
-            //   value: _selectedCityId,
-            //   selectedItemBuilder: (BuildContext context) {
-            //     return _selectedCityId != null
-            //         ? cities
-            //             .map((city) => DropdownMenuItem<int>(
-            //                   child: Text(SharedPrefController().getValueFor<String>('language')=='en'?cities
-            //                       .firstWhere((element) =>
-            //                   element.id == _selectedCityId)
-            //                       .nameEn! : cities
-            //                       .firstWhere((element) =>
-            //                   element.id == _selectedCityId)
-            //                       .nameAr!),
-            //                   value: city.id,
-            //                 ))
-            //             .toList()
-            //         : [];
-            //   },
-            //   items: cities
-            //       .map((city) => DropdownMenuItem<int>(
-            //             child: Text(SharedPrefController().getValueFor<String>('language')=='en'?city.nameEn!:city.nameAr!),
-            //             value: city.id,
-            //           ))
-            //       .toList(),
-            //   onChanged: (int? value) {
-            //     setState(() => _selectedCityId = value);
-            //             });
-            //         return Text('');
-            //       } else {
-            //         return Text('No Data');
-            //       }
-            //     },
-            //   ),
-            // ),
+
+              ),
+
+
+
             SizedBox(
               height: 20.h,
             ),
@@ -300,7 +236,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                       activeColor: Color(0xffFF7750),
                       groupValue: _gender,
                       onChanged: (String? value) {
-                        setState(() => _gender = value);
+                        setState(() => _gender = value!);
                       }),
                 ),
                 Expanded(
@@ -313,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                       activeColor: Color(0xffFF7750),
                       groupValue: _gender,
                       onChanged: (String? value) {
-                        setState(() => _gender = value);
+                        setState(() => _gender = value!);
                       }),
                 ),
               ],
@@ -348,6 +284,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    // context.showSnackBar(message: )
                     Navigator.pushReplacementNamed(context, '/login_screen');
                   },
                   child: Text(context.localizations.sign_in,
@@ -372,7 +309,8 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
     }
   }
   bool _checkData() {
-    if (_emailTextController.text.isNotEmpty &&_cityTextController.text.isNotEmpty &&
+    print(_passwordTextController.text);
+    if (_passwordTextController.text.isNotEmpty &&
         _passwordTextController.text.isNotEmpty && _nameTextController.text.isNotEmpty &&_mobileTextController.text.isNotEmpty) {
       return true;
     }
@@ -381,11 +319,10 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
   }
 
   void _register() async {
-
     ProcessResponse processResponse =await UsersApiController().register(user);
   if(processResponse.success){
     Navigator.pop(context);
-    context.showSnackBar(message: processResponse.message ,error: !processResponse.success);
+    context.showSnackBar(message: processResponse.message ,error: !processResponse.success,seconde: 10);
 
   }
 }

@@ -1,3 +1,4 @@
+import 'package:database_app/api/controllers/users_api_controller.dart';
 import 'package:database_app/database/controllers/user_db_controller.dart';
 import 'package:database_app/models/process_response.dart';
 import 'package:database_app/prefs/shared_pref_controller.dart';
@@ -20,23 +21,20 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> with Helpers {
-  late TextEditingController _emailTextController;
-  late String _language;
+  late TextEditingController _mobileTextController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _language =
-        SharedPrefController().getValueFor<String>(PrefKeys.language.name) ??
-            'en';
-    _emailTextController = TextEditingController();
+
+    _mobileTextController = TextEditingController();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    _emailTextController.dispose();
+    _mobileTextController.dispose();
     super.dispose();
   }
 
@@ -73,17 +71,28 @@ class _ForgotPasswordState extends State<ForgotPassword> with Helpers {
               height: 30.h,
             ),
             AppTextField(
-                hint: 'Email address',
-                prefixIcon: Icons.email,
+                hint: 'Mobile Number',
+                prefixIcon: Icons.phone,
                 keyboardType: TextInputType.text,
-                controller: _emailTextController),
+                controller: _mobileTextController),
             SizedBox(
               height: 20.h,
             ),
             Spacer(),
             ElevatedButton(
                 onPressed: () {
-                  _showVerifyBottomSheet();
+
+                  Future.delayed(
+                      Duration(seconds: 10),
+                  () {
+                    Navigator.pushReplacementNamed(context, '/reset_password_screen');
+                  },);
+                  // Navigator.pushReplacementNamed(context, '/reset_password_screen');
+                  _performForgetPassword();
+
+
+
+
                 },
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(325.w, 63.83.h),
@@ -187,8 +196,8 @@ class _ForgotPasswordState extends State<ForgotPassword> with Helpers {
                         ),
                         ElevatedButton(
                             onPressed: () {
-                              Navigator.pop(context);
-                              _showVerifyFieldBottomSheet();
+                              // Navigator.pop(context);
+                              // _showVerifyFieldBottomSheet();
                             },
                             style: ElevatedButton.styleFrom(
                                 minimumSize: Size(325.w, 63.83.h),
@@ -295,6 +304,30 @@ class _ForgotPasswordState extends State<ForgotPassword> with Helpers {
             },
           ));
         });
+  }
+
+  void _performForgetPassword() {
+    if (_checkData()) {
+      _forgetPassword();
+    }
+  }
+  bool _checkData() {
+    if (_mobileTextController.text.isNotEmpty ) {
+      return true;
+    }
+    context.showSnackBar( message: 'Enter Required Data!', error: true);
+    return false;
+  }
+
+  void _forgetPassword() async {
+
+    ProcessResponse processResponse =await UsersApiController().forgetPassword(mobile: int.parse(_mobileTextController.text)
+        );
+    if(processResponse.success){
+      // Navigator.pop(context);
+      context.showSnackBar(message: processResponse.message ,error: !processResponse.success ,seconde: 10);
+
+    }
   }
 }
 

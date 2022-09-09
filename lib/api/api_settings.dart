@@ -2,6 +2,10 @@ class ApiSettings {
   static const String _basedUrl="https://smart-store.mr-dev.tech/api/";
   static const String users='${_basedUrl}users';
   static const String login='${_basedUrl}auth/login';
+  static const String activate='${_basedUrl}auth/activate';
+  static const String changepassword='${_basedUrl}auth/activate';
+  static const String forgetpassword='${_basedUrl}auth/forget-password';
+  static const String resetpassword='${_basedUrl}auth/reset-password';
   static const String register='${_basedUrl}auth/register';
   static const String logout='${_basedUrl}auth/logout';
   static const String cities='${_basedUrl}cities';

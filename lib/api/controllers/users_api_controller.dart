@@ -12,8 +12,10 @@ import '../../models/home.dart';
 import '../../models/process_response.dart';
 
 class UsersApiController with Helpers {
-  Future<ProcessResponse> login(
-      {required String mobile, required String password}) async {
+
+
+
+  Future<ProcessResponse> login( {required String mobile, required String password}) async {
     Uri uri = Uri.parse(ApiSettings.login);
     var response =
         await http.post(uri, body: {'mobile': mobile, 'password': password});
@@ -38,16 +40,14 @@ class UsersApiController with Helpers {
       'mobile': user.mobile,
       'password': user.password,
       'gender': user.gender,
-      'city_id': user.cityId,
+      'city_id': user.cityId.toString(),
       'STORE_API_KEY': 'd3136b50-839a-4a1d-a030-874020601007',
     });
-    print(response.body);
     if (response.statusCode == 201 || response.statusCode == 400) {
       var json = jsonDecode(response.body);
-
-      return ProcessResponse(message: json['message'], success: json['status']);
+      print(json['code']);
+      return ProcessResponse(message:  json['message']+' '+json['code'].toString(), success: json['status']);
     }
-
     return errorResponse;
   }
 
@@ -60,7 +60,7 @@ class UsersApiController with Helpers {
       HttpHeaders.acceptHeader: 'application/json',
     });
 
-    print(response.body);
+
     if (response.statusCode == 200 || response.statusCode == 400) {
       var json = jsonDecode(response.body);
       SharedPrefController().clear();
@@ -130,4 +130,67 @@ class UsersApiController with Helpers {
       return home;
     }
   }
+
+  Future<ProcessResponse> activate({required int mobile , required int code }) async {
+    Uri uri = Uri.parse(ApiSettings.activate);
+    var response = await http.post(uri, body: {
+      'mobile': mobile.toString(),
+      'code': code.toString(),
+    });
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      var json = jsonDecode(response.body);
+      return ProcessResponse(message: json['message'], success: json['status']);
+    }
+
+    return errorResponse;
+  }
+  Future<ProcessResponse> changePassword({required int currentP_password , required int new_password ,  required int new_password_confirmation}) async {
+    Uri uri = Uri.parse(ApiSettings.changepassword);
+    var response = await http.post(uri,headers:{
+      HttpHeaders.authorizationHeader:
+        SharedPrefController().getValueFor<String>(PrefKeys.token.name)!},
+        body: {
+      'currentP_password': currentP_password.toString(),
+      'new_password': new_password.toString(),
+      'new_password_confirmation': new_password_confirmation.toString(),
+    });
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      var json = jsonDecode(response.body);
+      return ProcessResponse(message: json['message'], success: json['status']);
+    }
+//8631
+    return errorResponse;
+  }
+  Future<ProcessResponse> forgetPassword({required int mobile}) async {
+    Uri uri = Uri.parse(ApiSettings.forgetpassword);
+    var response = await http.post(uri,body: {
+      'mobile': mobile.toString(),
+
+    });
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      var json = jsonDecode(response.body);
+      return ProcessResponse(message: json['message']+' '+json['code'].toString(), success: json['status']);
+    }
+
+    return errorResponse;
+  }
+  Future<ProcessResponse>resetPassword({required int mobile ,required int code ,required int password ,required int password_confirmation}) async {
+    Uri uri = Uri.parse(ApiSettings.resetpassword);
+    var response = await http.post(uri,body: {
+      'mobile': mobile.toString(),
+      'code': code.toString(),
+      'password': password.toString(),
+      'password_confirmation': password_confirmation.toString(),
+
+    });
+    print(response.body);
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      var json = jsonDecode(response.body);
+      return ProcessResponse(message: json['message']+' '+json['code'].toString(), success: json['status']);
+    }
+    return errorResponse;
+  }
+
+
+
 }

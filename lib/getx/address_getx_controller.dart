@@ -16,9 +16,9 @@ class AddressGetxController extends GetxController {
   static AddressGetxController get to => Get.find<AddressGetxController>();
 
   void onInit() {
-    getAddresses();
-    getCities();
+    // getAddresses();
     super.onInit();
+    getCities();
   }
   Future<ProcessResponse> createAddress(String name,
       String info,
@@ -26,7 +26,6 @@ class AddressGetxController extends GetxController {
       int city_id,) async {
     ProcessResponse processResponse = await addressApiController
         .createAddress(name:name ,cityId: city_id ,contactNumber: contactNumber ,info: info );
-    // update();
     return getResponse(
         processResponse.success, message: processResponse.message);
   }

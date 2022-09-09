@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../api/controllers/users_api_controller.dart';
 import '../../getx/language_getx_controller.dart';
 import '../../widgets/app_text.dart';
 
@@ -21,8 +22,10 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Helpers {
-  late TextEditingController _emailTextController;
+  late TextEditingController _mobileTextController;
+  late TextEditingController _codeTextController;
   late TextEditingController _passwordTextController;
+  late TextEditingController _password_confirmationTextController;
   bool _obsecure = true;
   bool _obsecurePass2 = true;
 
@@ -30,15 +33,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Helpers 
   void initState() {
     // TODO: implement initState
     super.initState();
-    _emailTextController = TextEditingController();
+    _mobileTextController = TextEditingController();
+    _codeTextController = TextEditingController();
     _passwordTextController = TextEditingController();
+    _password_confirmationTextController = TextEditingController();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
-    _emailTextController.dispose();
+    _mobileTextController.dispose();
+    _codeTextController.dispose();
     _passwordTextController.dispose();
+    _password_confirmationTextController.dispose();
     super.dispose();
   }
 
@@ -80,7 +87,23 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Helpers 
               height: 30.h,
             ),
             AppTextField(
-                hint: 'Enter new password',
+                hint: 'Enter your mobile',
+                prefixIcon: Icons.phone,
+                keyboardType: TextInputType.phone,
+                controller: _mobileTextController),
+            SizedBox(
+              height: 30.h,
+            ),
+            AppTextField(
+                hint: 'Enter code',
+                prefixIcon: Icons.qr_code,
+                keyboardType: TextInputType.text,
+                controller: _codeTextController),
+            SizedBox(
+              height: 30.h,
+            ),
+            AppTextField(
+                hint: 'new password',
                 obscureText: _obsecure,
                 prefixIcon: Icons.lock,
                 suffixIcon: IconButton(
@@ -88,7 +111,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Helpers 
                       setState(() => _obsecure = !_obsecure);
                     },
 
-                    icon:  Icon( _obsecure ? Icons.visibility : Icons.visibility_off)),
+                    icon: Icon(
+                        _obsecure ? Icons.visibility : Icons.visibility_off)),
                 keyboardType: TextInputType.text,
                 controller: _passwordTextController),
 
@@ -104,15 +128,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Helpers 
                       setState(() => _obsecurePass2 = !_obsecurePass2);
                     },
                     // Icons.visibility
-                    icon:  Icon( _obsecurePass2 ? Icons.visibility : Icons.visibility_off )
+                    icon: Icon(_obsecurePass2 ? Icons.visibility : Icons
+                        .visibility_off)
                 ),
                 keyboardType: TextInputType.text,
-                controller: _passwordTextController),
-
+                controller: _password_confirmationTextController),
+// 7623
             const Spacer(),
             ElevatedButton(
                 onPressed: () {
-                  _showSuccessResetPasswordDialog(text: 'Change Password Success',subText: 'Tap to login to your account');
+                  print('sasa');
+                  _performResetPassword();
                 },
                 style: ElevatedButton.styleFrom(
                     minimumSize: Size(325.w, 63.83.h),
@@ -133,67 +159,81 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Helpers 
     );
   }
 
-  void _showSuccessResetPasswordDialog({required String text,required String subText}) async {
-    bool? result = await showDialog<bool>(
-        barrierDismissible: true,
-        barrierColor: Color(0xFF3E3E3E).withOpacity(0.8),
-        context: context,
-        builder: (context) {
-          return ShowSuccess(text: text,subText: subText,);
-        });
-    if(result ?? false){
-      // SharedPrefController().clear();
-      Navigator.pop(context);
-      Navigator.pop(context);
-      Navigator.pop(context);
-      // Navigator.pushReplacementNamed(context, '/login_screen');
-      // Navigator.pushReplacementNamed(context, '/login_screen');
+  void _performResetPassword() {
+    if (_checkData()) {
+      _resetPassword();
     }
   }
 
 
-
-}
-
-class ShowSuccess extends StatelessWidget {
-  final String text;
-  final String subText;
-  const ShowSuccess({
-    Key? key,
-   required this.text,
-   required this.subText
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      // titlePadding: ,
-      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20)),
-      title: Column(
-        children:[
-          SizedBox(height: 20.h,),
-          Icon(Icons.check_circle ,size: 58, color:Colors.green,),
-          SizedBox(height: 20.h,),
-          Text(
-          text,
-          style: GoogleFonts.nunito( fontSize: 17, color: Color(0xFF3E3E3E), fontWeight: FontWeight.bold ,),
-          textAlign:TextAlign.center,
-        ),
-          SizedBox(height: 10.h,),
-          TextButton(
-              onPressed: (){
-                Navigator.pop(context ,true);
-                // Navigator.pushReplacementNamed(context, '/login_screen');
-
-
-              }, child: Text(subText,style: GoogleFonts.nunito(fontSize: 14, color: Color(0xFFCACACA) ,fontWeight: FontWeight.normal),)),
-          SizedBox(height: 20.h,),
-
-
-
-        ]
-      ),
-
-    );
+  bool _checkData() {
+    if (_mobileTextController.text.isNotEmpty &&
+        _passwordTextController.text.isNotEmpty
+        && _password_confirmationTextController.text.isNotEmpty &&
+        _codeTextController.text.isNotEmpty) {
+      return true;
+    }
+    context.showSnackBar(message: 'Enter Required Data!', error: true);
+    return false;
   }
+
+  void _resetPassword() async {
+    print(_codeTextController.text);
+    ProcessResponse processResponse = await UsersApiController().resetPassword(
+        mobile: int.parse(_mobileTextController.text)
+        ,
+        password: int.parse(_passwordTextController.text),
+        code:  int.parse(_codeTextController.text),
+        password_confirmation: int.parse(
+            _password_confirmationTextController.text));
+    if (processResponse.success) {
+      Navigator.pop(context);
+    }
+      context.showSnackBar(
+          message: processResponse.message, error: !processResponse.success);
+  }
+
+
+// class ShowSuccess extends StatelessWidget {
+//   final String text;
+//   final String subText;
+//   const ShowSuccess({
+//     Key? key,
+//    required this.text,
+//    required this.subText
+//   }) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return AlertDialog(
+//       // titlePadding: ,
+//       shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20)),
+//       title: Column(
+//         children:[
+//           SizedBox(height: 20.h,),
+//           Icon(Icons.check_circle ,size: 58, color:Colors.green,),
+//           SizedBox(height: 20.h,),
+//           Text(
+//           text,
+//           style: GoogleFonts.nunito( fontSize: 17, color: Color(0xFF3E3E3E), fontWeight: FontWeight.bold ,),
+//           textAlign:TextAlign.center,
+//         ),
+//           SizedBox(height: 10.h,),
+//           TextButton(
+//               onPressed: (){
+//                 Navigator.pop(context ,true);
+//                 // Navigator.pushReplacementNamed(context, '/login_screen');
+//
+//
+//               }, child: Text(subText,style: GoogleFonts.nunito(fontSize: 14, color: Color(0xFFCACACA) ,fontWeight: FontWeight.normal),)),
+//           SizedBox(height: 20.h,),
+//
+//
+//
+//         ]
+//       ),
+//
+//     );
+//   }
+// }
 }

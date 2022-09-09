@@ -18,6 +18,12 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   OrderGetxController controller = Get.put(OrderGetxController());
+  @override
+  void initState() {
+    controller.getOrders();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +36,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       return controller.loading.value
           ? Center(child: CircularProgressIndicator())
           : controller.orders.isNotEmpty
-
           ?
-
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 25.w),
         child: ListView.builder(

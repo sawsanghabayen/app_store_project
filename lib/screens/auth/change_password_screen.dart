@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../api/controllers/users_api_controller.dart';
 import '../../getx/language_getx_controller.dart';
 import '../../widgets/app_text.dart';
 
@@ -127,9 +128,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with Helper
             const Spacer(),
             ElevatedButton(
                 onPressed: () {
-                  // print(_emailTextController.text);
-                  // print(_passwordTextController.text);
-                  Navigator.pushReplacementNamed(context, '/');
+                  _performContact();
+
+                  Navigator.pushReplacementNamed(context, '/home_screen');
                   // _performLogin();
                 },
                 style: ElevatedButton.styleFrom(
@@ -149,5 +150,30 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with Helper
     );
   }
 
+
+  void _performContact() {
+    if (_checkData()) {
+      _changePassword();
+    }
+  }
+  bool _checkData() {
+    if (_currentTextController.text.isNotEmpty &&_passwordTextController.text.isNotEmpty
+    &&_repeatPasswordTextController.text.isNotEmpty) {
+      return true;
+    }
+    context.showSnackBar( message: 'Enter Required Data!', error: true);
+    return false;
+  }
+
+  void _changePassword() async {
+
+    ProcessResponse processResponse =await UsersApiController().changePassword(currentP_password:int.parse( _currentTextController.text)
+        , new_password: int.parse(_passwordTextController.text) ,new_password_confirmation: int.parse(_repeatPasswordTextController.text) );
+    if(processResponse.success){
+      Navigator.pop(context);
+      context.showSnackBar(message: processResponse.message ,error: !processResponse.success);
+
+    }
+  }
 
 }

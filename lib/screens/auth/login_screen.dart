@@ -203,7 +203,8 @@ class _LoginScreenState extends State<LoginScreen> with Helpers {
     // print(processResponse.success);
     if(processResponse.success){
       Navigator.pushReplacementNamed(context, '/home_screen');
-
+    }else{
+      Navigator.pushNamed(context, '/verification_screen');
     }
     context.showSnackBar(message: processResponse.message ,error: !processResponse.success);
     }

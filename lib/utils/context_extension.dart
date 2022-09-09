@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 //   وبنعمل اضافات على عناصر موجودة مسبقا
 extension ContextHelper on BuildContext{
   void showSnackBar(
-      {required String message, bool error = false}) {
+      {required String message, bool error = false,int seconde=3}) {
     ScaffoldMessenger.of(this).showSnackBar(SnackBar(
       behavior: SnackBarBehavior.floating,
       content: Text(
@@ -14,7 +14,7 @@ extension ContextHelper on BuildContext{
         style: GoogleFonts.nunito(),
       ),
       backgroundColor: error ? Colors.red.shade700: Colors.green.shade300,
-      duration: const Duration(seconds: 3),
+      duration:  Duration(seconds: seconde),
       dismissDirection: DismissDirection.horizontal,
     ));
   }
