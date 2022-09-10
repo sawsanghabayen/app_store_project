@@ -57,8 +57,10 @@ class PaymentApiController with Helpers{
     if (response.statusCode == 200 || response.statusCode == 400) {
       var json = jsonDecode(response.body);
       var jsonDataObject = json['list'] as List;
-      return jsonDataObject.map((jsonObject) => Payment.fromJson(jsonObject))
+      var cards= jsonDataObject.map((jsonObject) => Payment.fromJson(jsonObject))
           .toList();
+      cards.where((element) => element.userId==SharedPrefController().getValueFor<String>(PrefKeys.token.name)!);
+      return cards;
     }
     return [];
   }
