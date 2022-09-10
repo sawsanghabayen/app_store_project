@@ -29,6 +29,12 @@ class SharedPrefController{
     _sharedPreferences.setString(PrefKeys.active.name, user.active.toString());
 
   }
+  void saveChangeProfile({required String name ,required String city_id ,required String gender }){
+    _sharedPreferences.setString(PrefKeys.name.name, name!);
+    _sharedPreferences.setString(PrefKeys.city_id.name, city_id!);
+    _sharedPreferences.setString(PrefKeys.gender.name, gender!);
+
+  }
 
 
 

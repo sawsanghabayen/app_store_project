@@ -22,13 +22,14 @@ class _AddressesScreenState extends State<AddressesScreen> {
   AddressGetxController controller=Get.put(AddressGetxController());
 int indexCurrent=0;
 int i=0;
+late int selectedIdex;
 
   @override
   void initState() {
     // TODO: implement initState
     SchedulerBinding.instance.addPostFrameCallback((_) {
       controller.getAddresses();
-
+      indexCurrent = controller.addresses.value.indexWhere((element) => element.id == controller.selectedAddress().id);
 
     });
     super.initState();
@@ -83,7 +84,7 @@ int i=0;
                             indexCurrent=index;
                             // isPressed =!isPressed;
                             controller.addAddress(controller.addresses.value[index]);
-                            Navigator.pop(context,);
+                            // Navigator.pop(context,);
                             setState((){});
 
                           },
@@ -129,7 +130,7 @@ int i=0;
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.r),
                               color: Colors.white,
-                              border: (indexCurrent == index) ? Border.all(color: Colors.red) :Border.all(color: Colors.white)
+                              border: (index == indexCurrent) ? Border.all(color: Colors.red) :Border.all(color: Colors.white)
                             ),
                           ),
                         ),

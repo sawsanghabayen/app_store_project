@@ -309,9 +309,7 @@ class _RegisterScreenState extends State<RegisterScreen> with Helpers {
     }
   }
   bool _checkData() {
-    print(_passwordTextController.text);
-    if (_passwordTextController.text.isNotEmpty &&
-        _passwordTextController.text.isNotEmpty && _nameTextController.text.isNotEmpty &&_mobileTextController.text.isNotEmpty) {
+    if ( _passwordTextController.text.isNotEmpty && _nameTextController.text.isNotEmpty &&_mobileTextController.text.isNotEmpty) {
       return true;
     }
     context.showSnackBar( message: 'Enter Required Data!', error: true);

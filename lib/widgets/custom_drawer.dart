@@ -59,7 +59,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushNamed(context, '/payments_screen');
+                Navigator.pushNamed(context, '/payments_cards_screen');
               },
             ),
             ListTile(

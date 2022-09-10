@@ -12,10 +12,8 @@ import '../../models/home.dart';
 import '../../models/process_response.dart';
 
 class UsersApiController with Helpers {
-
-
-
-  Future<ProcessResponse> login( {required String mobile, required String password}) async {
+  Future<ProcessResponse> login(
+      {required String mobile, required String password}) async {
     Uri uri = Uri.parse(ApiSettings.login);
     var response =
         await http.post(uri, body: {'mobile': mobile, 'password': password});
@@ -46,7 +44,9 @@ class UsersApiController with Helpers {
     if (response.statusCode == 201 || response.statusCode == 400) {
       var json = jsonDecode(response.body);
       print(json['code']);
-      return ProcessResponse(message:  json['message']+' '+json['code'].toString(), success: json['status']);
+      return ProcessResponse(
+          message: json['message'] + ' ' + json['code'].toString(),
+          success: json['status']);
     }
     return errorResponse;
   }
@@ -59,7 +59,6 @@ class UsersApiController with Helpers {
       HttpHeaders.authorizationHeader: token,
       HttpHeaders.acceptHeader: 'application/json',
     });
-
 
     if (response.statusCode == 200 || response.statusCode == 400) {
       var json = jsonDecode(response.body);
@@ -86,35 +85,6 @@ class UsersApiController with Helpers {
     return [];
   }
 
-  // Future<List<dynamic>> getCities() async {
-  //   Uri uri = Uri.parse(ApiSettings.cities);
-  //   var response = await http.get(uri, headers: {HttpHeaders.acceptHeader: 'application/json'});
-  //   print(response.statusCode);
-  //   if (response.statusCode == 200 || response.statusCode == 400) {
-  //     var json = jsonDecode(response.body);
-  //     List<dynamic> data = json['list'];
-  //     return data;
-  //   }
-  //   return [];
-  // }
-
-  //
-  // Future<List<MySlider>> getImageSlider() async {
-  //   String token =
-  //       SharedPrefController().getValueFor<String>(PrefKeys.token.name)!;
-  //   Uri uri = Uri.parse(ApiSettings.home);
-  //   var response = await http.get(uri, headers: {
-  //     HttpHeaders.authorizationHeader: token,
-  //     HttpHeaders.acceptHeader: 'application/json',
-  //   });
-  //   if (response.statusCode == 200 || response.statusCode == 400) {
-  //     var json = jsonDecode(response.body);
-  //     var dataJsonObject =json['data']['slider'] as List;
-  //     List<MySlider> mySlider = dataJsonObject.map((jsonObject) => MySlider.fromJson(jsonObject)).toList();
-  //     return mySlider;
-  //   }
-  //   return [];
-  // }
 
   Future<Home?> getHome() async {
     var response = await http.get(Uri.parse(ApiSettings.home), headers: {
@@ -131,7 +101,8 @@ class UsersApiController with Helpers {
     }
   }
 
-  Future<ProcessResponse> activate({required int mobile , required int code }) async {
+  Future<ProcessResponse> activate(
+      {required int mobile, required int code}) async {
     Uri uri = Uri.parse(ApiSettings.activate);
     var response = await http.post(uri, body: {
       'mobile': mobile.toString(),
@@ -144,12 +115,16 @@ class UsersApiController with Helpers {
 
     return errorResponse;
   }
-  Future<ProcessResponse> changePassword({required int currentP_password , required int new_password ,  required int new_password_confirmation}) async {
+
+  Future<ProcessResponse> changePassword(
+      {required int currentP_password,
+      required int new_password,
+      required int new_password_confirmation}) async {
     Uri uri = Uri.parse(ApiSettings.changepassword);
-    var response = await http.post(uri,headers:{
+    var response = await http.post(uri, headers: {
       HttpHeaders.authorizationHeader:
-        SharedPrefController().getValueFor<String>(PrefKeys.token.name)!},
-        body: {
+          SharedPrefController().getValueFor<String>(PrefKeys.token.name)!
+    }, body: {
       'currentP_password': currentP_password.toString(),
       'new_password': new_password.toString(),
       'new_password_confirmation': new_password_confirmation.toString(),
@@ -161,36 +136,69 @@ class UsersApiController with Helpers {
 //8631
     return errorResponse;
   }
+
   Future<ProcessResponse> forgetPassword({required int mobile}) async {
     Uri uri = Uri.parse(ApiSettings.forgetpassword);
-    var response = await http.post(uri,body: {
+    var response = await http.post(uri, body: {
       'mobile': mobile.toString(),
-
     });
     if (response.statusCode == 200 || response.statusCode == 400) {
       var json = jsonDecode(response.body);
-      return ProcessResponse(message: json['message']+' '+json['code'].toString(), success: json['status']);
+      return ProcessResponse(
+          message: json['message'] + ' ' + json['code'].toString(),
+          success: json['status']);
     }
 
     return errorResponse;
   }
-  Future<ProcessResponse>resetPassword({required int mobile ,required int code ,required int password ,required int password_confirmation}) async {
+
+  Future<ProcessResponse> resetPassword( {required int mobile,
+      required int code,
+      required int password,
+      required int password_confirmation}) async {
     Uri uri = Uri.parse(ApiSettings.resetpassword);
-    var response = await http.post(uri,body: {
+    var response = await http.post(uri, body: {
       'mobile': mobile.toString(),
       'code': code.toString(),
       'password': password.toString(),
       'password_confirmation': password_confirmation.toString(),
-
     });
     print(response.body);
     if (response.statusCode == 200 || response.statusCode == 400) {
       var json = jsonDecode(response.body);
-      return ProcessResponse(message: json['message']+' '+json['code'].toString(), success: json['status']);
+      return ProcessResponse(
+          message: json['message'] + ' ' + json['code'].toString(),
+          success: json['status']);
     }
     return errorResponse;
   }
 
+  Future<ProcessResponse> updateProfile(
+      {required String name,
+      required String gender,
+      required String city_id}) async {
+    Uri uri = Uri.parse(ApiSettings.updateprofile);
+    var response = await http.post(uri, body: {
+      'name': name,
+      'gender': gender,
+      'city_id': city_id.toString(),
+    }, headers: {
+      HttpHeaders.authorizationHeader:
+          SharedPrefController().getValueFor<String>(PrefKeys.token.name)!,
+      'X-Requested-With': 'XMLHttpRequest',
+      'Accept': 'application/json'
+    });
+    print(response.body);
+    if (response.statusCode == 200 || response.statusCode == 400) {
+      //TODO save user in shared preferences
+      SharedPrefController().removeValueFor(PrefKeys.name.name);
+      SharedPrefController().removeValueFor(PrefKeys.city_id.name);
+      SharedPrefController().removeValueFor(PrefKeys.gender.name);
 
-
+      SharedPrefController().saveChangeProfile(name: name, city_id: city_id, gender: gender);
+      var json = jsonDecode(response.body);
+      return ProcessResponse(message: json['message'], success: json['status']);
+    }
+    return errorResponse;
+  }
 }

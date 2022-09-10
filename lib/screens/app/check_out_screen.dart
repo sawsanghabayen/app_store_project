@@ -7,6 +7,7 @@ import 'package:database_app/models/address.dart';
 import 'package:database_app/models/process_response.dart';
 import 'package:database_app/screens/app/addresses_screen.dart';
 import 'package:database_app/screens/app/home_screen.dart';
+import 'package:database_app/screens/app/payment_card/payments_cards_screen.dart';
 import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/app_text.dart';
 import 'package:database_app/widgets/icon_with_text.dart';
@@ -14,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../getx/card_getx_controller.dart';
 
 class CheckOutScreen extends StatefulWidget {
   CheckOutScreen({Key? key}) : super(key: key);
@@ -31,6 +34,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   AddressGetxController addressGetxController =
       Get.put<AddressGetxController>(AddressGetxController());
+
+  CardGetxController cardGetxController =
+      Get.put<CardGetxController>(CardGetxController());
 
   List<Address> list = [];
 
@@ -82,10 +88,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   ),
                   SizedBox(
                     height: 150.h,
-                    child: GetBuilder<AddressGetxController>(
+                    child: GetX<AddressGetxController>(
                       builder: (controller) {
-                        if (controller.addressRx.value.name == null) {
-                          List<Address> address = controller.addresses.value;
+                        if (controller.addressRx.value.id== null) {
+                          // List<Address> address = controller.addresses.value;
 
                           /**
                            *  list.firstWhere((element) => element.contains(''),
@@ -105,19 +111,19 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             AppText(
-                                                text: address[0].name!,
+                                                text: 'No Data',
                                                 fontSize: 13.sp,
                                                 color: Color(0xFF8992A3)),
                                           ],
                                         ),
                                         IconWithText(
-                                            text: address[0].city!.nameEn!,
+                                            text: 'No Data',
                                             icon: Icon(Icons.location_city)),
                                         IconWithText(
-                                            text: address[0].info!,
+                                            text: 'No Data',
                                             icon: Icon(Icons.location_pin)),
                                         IconWithText(
-                                            text: address[0].contactNumber!,
+                                            text: 'No Data',
                                             icon: Icon(Icons.call)),
                                       ]),
                                   height: 144.h,
@@ -190,45 +196,205 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   ),
                   _buildType(
                       name: 'Payment',
-                      onPress: () {
-                        print(list);
+                      onPress: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return PaymentsCardsScreen();
+                            },
+                          ),
+                        );
                       },
                       text: 'Change'),
                   SizedBox(
-                    height: 15.h,
-                  ),
-                  Container(
-                    height: 90.h,
-                    // width: ,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.paypal,
-                            color: Colors.blue,
-                            size: 35,
+                    height: 170.21.h,
+                    child: GetX<CardGetxController>(
+                    builder: (CardGetxController controller) {
+                      return controller.loading.value
+                          ? CircularProgressIndicator()
+                          :
+                      controller.cardRx.value.id==null ?
+                      Container(
+                        height:10.h,
+                        // width: ,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+
+                              Image(image:  const AssetImage('images/cash.jpg') ,width: 50.w, height:50.h),
+
+
+                              SizedBox(
+                                width: 8.w,
+                              ),
+                              AppText(
+                                  text: 'Cash Payment',
+                                  fontSize: 20.sp,
+                                  color: Colors.grey),
+                            ],
                           ),
-                          SizedBox(
-                            width: 8.w,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.r),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.shade300,
+                                offset: Offset(0, 10),
+                                blurRadius: 5)
+                          ],
+                          color: Colors.white,
+                        ),
+                      ):
+                      // Container(
+                      //   height: 90.h,
+                      //   // width: ,
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(8.0),
+                      //     child: Row(
+                      //       children: [
+                      //         controller.selectedCard().type=='Visa'?
+                      //         Image(image:  const AssetImage('images/visa.png') ,width: 20.w, height:20.h):
+                      //         Image(image:  const AssetImage('images/mastercard.png') ,width: 20.w, height: 20.h),
+                      //
+                      //         SizedBox(
+                      //           width: 8.w,
+                      //         ),
+                      //         AppText(
+                      //             text: controller.selectedCard().cardNumber.toString()!,
+                      //             fontSize: 12.sp,
+                      //             color: Colors.grey),
+                      //       ],
+                      //     ),
+                      //   ),
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(20.r),
+                      //     boxShadow: [
+                      //       BoxShadow(
+                      //           color: Colors.grey.shade300,
+                      //           offset: Offset(0, 10),
+                      //           blurRadius: 5)
+                      //     ],
+                      //     color: Colors.white,
+                      //   ),
+                      // );
+                      Container(
+                        margin: EdgeInsets.all(7.8),
+                        height: 161.21.h,
+                        width: 295.55.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(
+                            15,
                           ),
-                          AppText(
-                              text: '***** ****** ****** 45125',
-                              fontSize: 12.sp,
-                              color: Colors.grey),
-                        ],
-                      ),
+
+                          gradient: LinearGradient(
+
+                            colors: [
+                              controller.selectedCard().type=='Visa'? Color(0xff1b447b).withOpacity(1) :Colors.deepOrange,
+                              controller.selectedCard().type=='Visa'? Color(0xff1b447b).withOpacity(0.97):Colors.deepOrangeAccent,
+                              // Colors.black45,
+                            ],
+                          ),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //       color: Colors.black.withOpacity(.25),
+                          //       offset: Offset(0, 15),
+                          //       blurRadius: 45)
+                          // ]
+                        ),
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.more_horiz,
+                                      color: Colors.white,
+                                      size: 30,
+                                    )),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: EdgeInsets.all(15),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  children: [
+                                    Text(controller.selectedCard().cardNumber!.substring(0,4)! +' '+
+                                        controller.selectedCard().cardNumber!.substring(4,8)!+' '+
+                                        controller.selectedCard().cardNumber!.substring(8,12)!+' '+
+                                        controller.selectedCard().cardNumber!.substring(12,16)!,
+                                        style: TextStyle(
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white)),
+                                    Container(
+                                        color: Colors.white,
+                                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                                        child:
+                                        controller.selectedCard().type=='Visa'?
+                                        Image(image:
+                                        const AssetImage('images/visa.png') ,
+                                            width: 50.w, height: 30.h)
+                                            :
+                                        Image(image:  const AssetImage('images/mastercard.png') ,width: 50.w, height: 50.h)
+                                    )
+
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.all(15),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(controller.selectedCard().holderName!,
+                                            style: TextStyle(
+                                                fontSize: 18.sp,
+                                                // fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+
+                                        Text(controller.selectedCard().cvv!.substring(0,1)+' '+controller.selectedCard().cvv!.substring(1,2)+' '+controller.selectedCard().cvv!.substring(2,3)+' '+controller.selectedCard().cvv!.substring(3,3)!,
+                                            style: TextStyle(
+                                                fontSize: 18.sp,
+                                                // fontWeight: FontWeight.bold,
+                                                color: Colors.grey[400])),
+
+
+                                      ],
+                                    ),
+                                    SizedBox(height: 20.h,),
+                                    Text(controller.selectedCard().expDate!,
+                                        style: TextStyle(
+                                            fontSize: 18.sp,
+                                            // fontWeight: FontWeight.bold,
+                                            color: Colors.grey[400])),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+
+                    }
                     ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.r),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.shade300,
-                            offset: Offset(0, 10),
-                            blurRadius: 5)
-                      ],
-                      color: Colors.white,
-                    ),
+
                   ),
                 ],
               ),
@@ -310,12 +476,23 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   null
                               ? addressGetxController.addresses.value.first.id!
                               : addressGetxController.addressRx.value.id!;
+
+                          String typePayment =
+                          cardGetxController.cardRx.value.type ==
+                              null
+                              ? 'Cash'
+                              : cardGetxController.cardRx.value.type!;
+                          // print(typePayment);
+                          //
+                          //
                           ProcessResponse process=await OrderGetxController.to.create(
                               CartGetxController.to.cartItems.value,
-                              'Cash',
-                              id);
+                              // 'Cash',
+                              typePayment,
+                              id
+                          );
                           _showSuccessConfirmOrder(text:process.message,);
-                          // context.showSnackBar(message: process.message,error: !process.success);
+                          context.showSnackBar(message: process.message,error: !process.success);
 
                         },
                         style: ElevatedButton.styleFrom(

@@ -7,6 +7,7 @@ class ApiSettings {
   static const String forgetpassword='${_basedUrl}auth/forget-password';
   static const String resetpassword='${_basedUrl}auth/reset-password';
   static const String register='${_basedUrl}auth/register';
+  static const String updateprofile='${_basedUrl}auth/update-profile';
   static const String logout='${_basedUrl}auth/logout';
   static const String cities='${_basedUrl}cities';
   static const String home='${_basedUrl}home';
@@ -17,4 +18,5 @@ class ApiSettings {
   static const String addresses='${_basedUrl}addresses';
   static const String contact='${_basedUrl}contact-requests';
   static const String favoriteproducts='${_basedUrl}favorite-products';
+  static const String paymentcards='${_basedUrl}payment-cards';
 }

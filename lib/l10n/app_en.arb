@@ -58,7 +58,13 @@
 "change_pass":"Change Password",
 "contact_us":"Contact Us",
 "about_us":"About Us",
-"logout":"Logout"
+"logout":"Logout",
+
+"type_card":"Type Card",
+"visa":"Visa",
+"master":"Master"
+
+
 
 
 

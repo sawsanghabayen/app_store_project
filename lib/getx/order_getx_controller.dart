@@ -50,6 +50,8 @@ class OrderGetxController extends GetxController {
         cartItems: list, paymentType: paymentType, addressId: addressId);
     return getResponse(processResponse.success, message: processResponse.message);
   }
+
+
   Future<void> getOrders() async {
     loading.value = true;
     orders.value = await orderApiController.getAllOrders();

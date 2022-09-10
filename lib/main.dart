@@ -14,7 +14,8 @@ import 'package:database_app/screens/app/new_addess_screen.dart';
 import 'package:database_app/screens/app/notifications_screen.dart';
 import 'package:database_app/screens/app/order_details_screen.dart';
 import 'package:database_app/screens/app/orders_screen.dart';
-import 'package:database_app/screens/app/payments_screen.dart';
+import 'package:database_app/screens/app/payment_card/new_payments_screen.dart';
+import 'package:database_app/screens/app/payment_card/payments_cards_screen.dart';
 import 'package:database_app/screens/app/product_screen.dart';
 import 'package:database_app/screens/app/products_screen.dart';
 import 'package:database_app/screens/app/setting_screen.dart';
@@ -117,10 +118,11 @@ class MyApp extends StatelessWidget {
                '/orders_screen': (context) =>  OrdersScreen(),
                // '/order_details_screen': (context) =>  OrderDetailsScreen(),
                '/notifications_screen': (context) => const NotificationsScreen(),
-               '/payments_screen': (context) => const PaymentsScreen(),
+               '/new_payments_screen': (context) => const NewPaymentsScreen(),
+               '/payments_cards_screen': (context) =>  PaymentsCardsScreen(),
                '/check_out_screen': (context) =>  CheckOutScreen(),
                '/contact_us_screen': (context) => const ContactUsScreen(),
-               // '/edit_profile_screen': (context) => const EditProfileScreen(),
+               '/edit_profile_screen': (context) => const EditProfileScreen(),
                '/about_us_screen': (context) => const AboutUsScreen(),
                '/change_mobile_screen': (context) => const ChangeMobileScreen(),
              },
