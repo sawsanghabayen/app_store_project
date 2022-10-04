@@ -28,7 +28,7 @@ class _HeaderPageState extends State<HeaderPage> {
       height: 300.h,
       child: CarouselSlider(
         options: CarouselOptions(
-          height: 400.h,
+          height: 300.h,
           initialPage: 0,
           enableInfiniteScroll: true,
           reverse: false,
@@ -44,14 +44,14 @@ class _HeaderPageState extends State<HeaderPage> {
           return Builder(
             builder: (BuildContext context) {
               return CachedNetworkImage(
-                height: 400.h,
+                height: double.infinity,
                 width: double.infinity,
                 imageUrl: slider.imageUrl,
                 placeholder: (context, url) => Center(
                   child: CircularProgressIndicator(),
                 ),
                 errorWidget: (context, url, error) => Icon(Icons.error),
-                fit: BoxFit.contain,
+                fit: BoxFit.cover,
               );
             },
           );

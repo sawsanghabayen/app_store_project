@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../getx/order_getx_controller.dart';
-import '../../widgets/app_text.dart';
+import '../../../getx/order_getx_controller.dart';
+import '../../../widgets/app_text.dart';
 class OrderDetailsScreen extends StatefulWidget {
   final int id;
 
@@ -78,7 +78,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   ),
                                   child: Image(
                                     image: NetworkImage(
-                                      controller.orderDetails.value!.products![index].imageUrl!,
+                                      controller.orderDetails.value!.products![index].imageUrl,
                                     ),
                                     width: 77.15,
                                     height: 54.13,
@@ -93,7 +93,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     AppText(
-                                      text: controller.orderDetails.value!.products![index].nameEn!,
+                                      text: controller.orderDetails.value!.products![index].nameEn,
                                       fontSize: 14.sp,
                                       color: Color(0xFF3E3E3E),
                                       fontWeight: FontWeight.bold,
@@ -102,7 +102,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       height: 3.h,
                                     ),
                                     AppText(
-                                      text: '${controller.orderDetails.value!.products![index].orderQuantity!} Items',
+                                      text: '${controller.orderDetails.value!.products![index].quantity} Items',
                                       fontSize: 14.sp,
                                       color: Color(0xFFCACACA),
                                       fontWeight: FontWeight.w400,
@@ -111,7 +111,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                       height: 3.h,
                                     ),
                                     AppText(
-                                      text: '\$${controller.orderDetails.value!.products![index].price!}',
+                                      text: '\$${controller.orderDetails.value!.products![index].price}',
                                       fontSize: 17.sp,
                                       color: Color(0xffFF7750),
                                       fontWeight: FontWeight.bold,

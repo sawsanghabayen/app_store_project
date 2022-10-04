@@ -7,9 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../../getx/address_getx_controller.dart';
-import '../../models/address.dart';
-import '../../models/process_response.dart';
+import '../../../getx/address_getx_controller.dart';
+import '../../../models/address.dart';
+import '../../../models/process_response.dart';
 
 class AddressesScreen extends StatefulWidget {
    AddressesScreen({Key? key}) : super(key: key);

@@ -1,8 +1,10 @@
+import 'package:database_app/getx/address_getx_controller.dart';
 import 'package:database_app/prefs/shared_pref_controller.dart';
 import 'package:database_app/utils/context_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,10 +17,13 @@ class LaunchScreen extends StatefulWidget {
 
 
 class _LaunchScreenState extends State<LaunchScreen> {
+  AddressGetxController controllerAddress = Get.put(AddressGetxController());
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    controllerAddress.getCities();
+    controllerAddress.getAddresses();
     Future.delayed(Duration(seconds:3),(){
       String route=SharedPrefController().getValueFor<bool>(PrefKeys.loggedIn.name) ?? false ?'/home_screen': '/on_boarding_screen';
       Navigator.pushReplacementNamed(context,route);

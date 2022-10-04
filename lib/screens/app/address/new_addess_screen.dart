@@ -1,5 +1,5 @@
 import 'package:database_app/models/process_response.dart';
-import 'package:database_app/screens/app/addresses_screen.dart';
+import 'package:database_app/screens/app/address/addresses_screen.dart';
 import 'package:database_app/screens/app/home_screen.dart';
 import 'package:database_app/screens/widgets/app_text_field.dart';
 import 'package:database_app/utils/context_extension.dart';
@@ -11,9 +11,9 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../getx/address_getx_controller.dart';
-import '../../models/city.dart';
-import '../../prefs/shared_pref_controller.dart';
+import '../../../getx/address_getx_controller.dart';
+import '../../../models/city.dart';
+import '../../../prefs/shared_pref_controller.dart';
 
 class NewAddressScreen extends StatefulWidget {
   const NewAddressScreen({Key? key}) : super(key: key);

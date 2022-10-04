@@ -5,11 +5,12 @@ import '../api/controllers/users_api_controller.dart';
 import '../models/home.dart';
 
 class HomeGetxController extends GetxController {
-  Home? home;
+  Rx<Home> home =Home().obs;
   RxBool isLoading = false.obs;
+
   UsersApiController userApiController = UsersApiController();
 
-  static HomeGetxController get to => Get.find();
+  static HomeGetxController get to => Get.find<HomeGetxController>();
 
   @override
   void onInit() {
@@ -18,9 +19,9 @@ class HomeGetxController extends GetxController {
   }
 
 
-  Future<void> getHome() async {
+ Future<void> getHome() async {
     isLoading.value = true;
-    home = await userApiController.getHome();
+    home.value = await userApiController.getHome();
     isLoading.value = false;
     update();
   }

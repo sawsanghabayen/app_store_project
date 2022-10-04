@@ -181,10 +181,10 @@ class _PaymentsCardsScreenState extends State<PaymentsCardsScreen> {
                                   mainAxisAlignment: MainAxisAlignment
                                       .spaceBetween,
                                   children: [
-                                    Text(controller.card[index].cardNumber!.substring(0,4)! +' '+
-                                        controller.card[index].cardNumber!.substring(4,8)!+' '+
-                                        controller.card[index].cardNumber!.substring(8,12)!+' '+
-                                        controller.card[index].cardNumber!.substring(12,16)!,
+                                    Text(controller.card[index].cardNumber!.substring(0,4) +' '+
+                                        controller.card[index].cardNumber!.substring(4,8)+' '+
+                                        controller.card[index].cardNumber!.substring(8,12)+' '+
+                                        controller.card[index].cardNumber!.substring(12,16),
                                         style: TextStyle(
                                             fontSize: 18.sp,
                                             fontWeight: FontWeight.bold,
@@ -224,7 +224,7 @@ class _PaymentsCardsScreenState extends State<PaymentsCardsScreen> {
                                                 // fontWeight: FontWeight.bold,
                                                 color: Colors.white)),
 
-                                        Text(controller.card[index].cvv!.substring(0,1)+' '+controller.card[index].cvv!.substring(1,2)+' '+controller.card[index].cvv!.substring(2,3)+' '+controller.card[index].cvv!.substring(3,3)!,
+                                        Text(controller.card[index].cvv!.substring(0,1)+' '+controller.card[index].cvv!.substring(1,2)+' '+controller.card[index].cvv!.substring(2,3)+' '+controller.card[index].cvv!.substring(3,3),
                                             style: TextStyle(
                                                 fontSize: 18.sp,
                                                 // fontWeight: FontWeight.bold,

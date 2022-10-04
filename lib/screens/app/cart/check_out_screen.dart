@@ -5,7 +5,7 @@ import 'package:database_app/getx/cart_getx_controller.dart';
 import 'package:database_app/getx/order_getx_controller.dart';
 import 'package:database_app/models/address.dart';
 import 'package:database_app/models/process_response.dart';
-import 'package:database_app/screens/app/addresses_screen.dart';
+import 'package:database_app/screens/app/address/addresses_screen.dart';
 import 'package:database_app/screens/app/home_screen.dart';
 import 'package:database_app/screens/app/payment_card/payments_cards_screen.dart';
 import 'package:database_app/utils/context_extension.dart';
@@ -16,7 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../getx/card_getx_controller.dart';
+import '../../../getx/card_getx_controller.dart';
 
 class CheckOutScreen extends StatefulWidget {
   CheckOutScreen({Key? key}) : super(key: key);
@@ -326,10 +326,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   mainAxisAlignment: MainAxisAlignment
                                       .spaceBetween,
                                   children: [
-                                    Text(controller.selectedCard().cardNumber!.substring(0,4)! +' '+
-                                        controller.selectedCard().cardNumber!.substring(4,8)!+' '+
-                                        controller.selectedCard().cardNumber!.substring(8,12)!+' '+
-                                        controller.selectedCard().cardNumber!.substring(12,16)!,
+                                    Text(controller.selectedCard().cardNumber!.substring(0,4) +' '+
+                                        controller.selectedCard().cardNumber!.substring(4,8)+' '+
+                                        controller.selectedCard().cardNumber!.substring(8,12)+' '+
+                                        controller.selectedCard().cardNumber!.substring(12,16),
                                         style: TextStyle(
                                             fontSize: 18.sp,
                                             fontWeight: FontWeight.bold,
@@ -369,7 +369,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                 // fontWeight: FontWeight.bold,
                                                 color: Colors.white)),
 
-                                        Text(controller.selectedCard().cvv!.substring(0,1)+' '+controller.selectedCard().cvv!.substring(1,2)+' '+controller.selectedCard().cvv!.substring(2,3)+' '+controller.selectedCard().cvv!.substring(3,3)!,
+                                        Text(controller.selectedCard().cvv!.substring(0,1)+' '+controller.selectedCard().cvv!.substring(1,2)+' '+controller.selectedCard().cvv!.substring(2,3)+' '+controller.selectedCard().cvv!.substring(3,3),
                                             style: TextStyle(
                                                 fontSize: 18.sp,
                                                 // fontWeight: FontWeight.bold,

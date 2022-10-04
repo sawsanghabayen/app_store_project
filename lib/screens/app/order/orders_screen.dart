@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../getx/order_getx_controller.dart';
+import '../../../getx/order_getx_controller.dart';
 import 'order_details_screen.dart';
 class OrdersScreen extends StatefulWidget {
 

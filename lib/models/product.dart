@@ -1,35 +1,20 @@
 class Product {
-  int? id;
-  String? nameEn;
-  String? nameAr;
-  String? infoEn;
-  String? infoAr;
-  String? price;
-  String? quantity;
-  String? overalRate;
-  String? subCategoryId;
-  int? productRate;
+  late int id;
+  late String nameEn;
+  late String nameAr;
+  late String infoEn;
+  late String infoAr;
+  late String price;
+  late String quantity;
+  late String overalRate;
+  late String subCategoryId;
+  String productRate='0';
   String? offerPrice;
-  bool? isFavorite;
-  String? imageUrl;
-  String? orderQuantity;
+  late bool isFavorite;
+  late String imageUrl;
+  // late String orderQuantity;
 
-  Product(
-      {this.id,
-        this.nameEn,
-        this.nameAr,
-        this.infoEn,
-        this.infoAr,
-        this.price,
-        this.quantity,
-        this.overalRate,
-        this.subCategoryId,
-        this.productRate,
-        this.offerPrice,
-        this.isFavorite,
-        this.orderQuantity,
-
-        this.imageUrl});
+  Product();
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -41,11 +26,11 @@ class Product {
     quantity = json['quantity'];
     overalRate = json['overal_rate'];
     subCategoryId = json['sub_category_id'];
-    productRate = json['product_rate'];
+    productRate = json['product_rate'].toString();
     offerPrice = json['offer_price'];
     isFavorite = json['is_favorite'];
     imageUrl = json['image_url'];
-    orderQuantity = json['order_quantity'];
+    // orderQuantity = json['order_quantity'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,7 +48,7 @@ class Product {
     data['offer_price'] = this.offerPrice;
     data['is_favorite'] = this.isFavorite;
     data['image_url'] = this.imageUrl;
-    data['order_quantity'] = this.orderQuantity;
+    // data['order_quantity'] = this.orderQuantity;
     return data;
   }
 }

@@ -3,9 +3,12 @@ import 'package:database_app/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LikedScreen extends StatelessWidget {
-  const LikedScreen({Key? key}) : super(key: key);
+  /*const*/ LikedScreen({Key? key}) : super(key: key);
+  ProductGetxController productGetxController=Get.put(ProductGetxController());
+
   // ProductGetxController
 
   @override
@@ -16,7 +19,7 @@ class LikedScreen extends StatelessWidget {
         init: ProductGetxController(),
         builder: (controller) {
           return controller.loading.value
-              ? CircularProgressIndicator()
+              ? Center(child: CircularProgressIndicator())
               : controller.favoriteProducts.isNotEmpty ? Padding(
             padding: EdgeInsets.symmetric(horizontal: 25.w),
             child: ListView.builder(
@@ -47,7 +50,7 @@ class LikedScreen extends StatelessWidget {
                               child: Image(
                                 image: NetworkImage(
                                     controller.favoriteProducts[index]
-                                        .imageUrl!),
+                                        .imageUrl),
                                 width: 77.15,
                                 height: 54.13,
                               )),
@@ -58,7 +61,7 @@ class LikedScreen extends StatelessWidget {
                               children: [
                                 AppText(
                                   text: controller.favoriteProducts[index]
-                                      .nameEn!,
+                                      .nameEn,
                                   fontSize: 14.sp,
                                   color: Color(0xFF3E3E3E),
                                   fontWeight: FontWeight.bold,
@@ -68,8 +71,8 @@ class LikedScreen extends StatelessWidget {
                                 ),
                                 AppText(
                                   text: controller.favoriteProducts[index]
-                                      .infoEn!.length >= 30 ?controller.favoriteProducts[index].infoEn!.substring(0,30) +' ...': controller
-                                      .favoriteProducts[index].infoEn! ,
+                                      .infoEn.length >= 30 ?controller.favoriteProducts[index].infoEn.substring(0,30) +' ...': controller
+                                      .favoriteProducts[index].infoEn ,
                                   fontSize: 14.sp,
                                   color: Color(0xFFCACACA),
                                   fontWeight: FontWeight.w400,
@@ -83,7 +86,7 @@ class LikedScreen extends StatelessWidget {
                                   children: [
                                     AppText(
                                       text: '\$${controller
-                                          .favoriteProducts[index].price!}',
+                                          .favoriteProducts[index].price}',
                                       fontSize: 12.sp,
                                       color: Color(0xffFF7750),
                                       fontWeight: FontWeight.bold,
@@ -98,9 +101,14 @@ class LikedScreen extends StatelessWidget {
                                         ),
                                         height: 28.h,
                                         width: 28.w,
-                                        child: Icon(
-                                          Icons.favorite,
-                                          color: Colors.red,
+                                        child: InkWell(
+                                          onTap: (){
+                                            productGetxController.addFavoriteProducts(product: controller.favoriteProducts[index]);
+                                          },
+                                          child: Icon(
+                                            Icons.favorite,
+                                            color: Colors.red,
+                                          ),
                                         )),
                                   ],
                                 ),
@@ -114,7 +122,7 @@ class LikedScreen extends StatelessWidget {
                 );
               },
             ),
-          ) : Text('no data');
+          ) : Center(child: Text('No Items',style: GoogleFonts.cairo(fontWeight: FontWeight.bold ,fontSize: 30.sp),));
         },
 
       ),

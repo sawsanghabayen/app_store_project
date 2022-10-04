@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../getx/cart_getx_controller.dart';
-import '../../getx/product_getx_controller.dart';
-import '../../widgets/app_text.dart';
+import '../../../getx/cart_getx_controller.dart';
+import '../../../getx/product_getx_controller.dart';
+import '../../../widgets/app_text.dart';
 
 class CartScreen extends StatelessWidget {
   CartScreen({Key? key}) : super(key: key);

@@ -88,7 +88,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with Helper
                     icon: Icon(
                         _obsecure ? Icons.visibility : Icons.visibility_off)),
                 keyboardType: TextInputType.text,
-                controller: _passwordTextController),
+                controller: _currentTextController),
 
             SizedBox(
               height: 20.h,
@@ -123,14 +123,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with Helper
                         .visibility_off)
                 ),
                 keyboardType: TextInputType.text,
-                controller: _passwordTextController),
+                controller: _repeatPasswordTextController),
 
             const Spacer(),
             ElevatedButton(
                 onPressed: () {
-                  _performContact();
+                  _performchangePassword();
 
-                  Navigator.pushReplacementNamed(context, '/home_screen');
+
+                  // Navigator.pushReplacementNamed(context, '/home_screen');
                   // _performLogin();
                 },
                 style: ElevatedButton.styleFrom(
@@ -151,9 +152,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with Helper
   }
 
 
-  void _performContact() {
+  Future<void> _performchangePassword() async{
     if (_checkData()) {
-      _changePassword();
+      await _changePassword();
     }
   }
   bool _checkData() {
@@ -161,19 +162,23 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> with Helper
     &&_repeatPasswordTextController.text.isNotEmpty) {
       return true;
     }
-    context.showSnackBar( message: 'Enter Required Data!', error: true);
+    // context.showSnackBar( message: 'Enter Required Data!', error: true);
     return false;
   }
 
-  void _changePassword() async {
+  Future<void> _changePassword() async {
 
-    ProcessResponse processResponse =await UsersApiController().changePassword(currentP_password:int.parse( _currentTextController.text)
+    ProcessResponse processResponse =await UsersApiController().changePassword(current_password:int.parse( _currentTextController.text)
         , new_password: int.parse(_passwordTextController.text) ,new_password_confirmation: int.parse(_repeatPasswordTextController.text) );
     if(processResponse.success){
-      Navigator.pop(context);
-      context.showSnackBar(message: processResponse.message ,error: !processResponse.success);
+      // Navigator.pop(context);
+      Navigator.pushReplacementNamed(context, '/home_screen');
+      print('success');
+      // context.showSnackBar(message: processResponse.message ,error: !processResponse.success);
 
     }
+    context.showSnackBar(message: processResponse.message ,error: !processResponse.success);
+
   }
 
 }

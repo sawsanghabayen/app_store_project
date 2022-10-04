@@ -1,3 +1,4 @@
+import 'package:database_app/getx/user_getx_controller.dart';
 import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/app_text.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +7,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../api/controllers/users_api_controller.dart';
-import '../../getx/address_getx_controller.dart';
-import '../../models/city.dart';
-import '../../models/process_response.dart';
-import '../../prefs/shared_pref_controller.dart';
+import '../../../api/controllers/users_api_controller.dart';
+import '../../../getx/address_getx_controller.dart';
+import '../../../models/city.dart';
+import '../../../models/process_response.dart';
+import '../../../prefs/shared_pref_controller.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -22,13 +23,9 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController _nameTextController;
   late TextEditingController _cityTextController;
-  AddressGetxController controller = Get.put(AddressGetxController());
+  // UserGetxController controller =Get.put(UserGetxController());
+  AddressGetxController controllerAddress = Get.put(AddressGetxController());
 
-  // final List<City> _cities = <City>[
-  //   const City(id: 1, title: 'Gaza'),
-  //   const City(id: 2, title: 'BeitLahia'),
-  //   const City(id: 3, title: 'Khanyounis'),
-  // ];
   late String _gender =  SharedPrefController().getValueFor<String>(PrefKeys.gender.name)!;
 
   late int? _selectedCityId = int.parse(SharedPrefController().getValueFor<String>(PrefKeys.city_id.name)!);
@@ -151,16 +148,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 value: _selectedCityId,
                 selectedItemBuilder: (BuildContext context) {
                   return _selectedCityId != null
-                      ? controller.cities
+                      ? controllerAddress.cities
                       .map((city) => DropdownMenuItem<int>(
                     child: Text(SharedPrefController()
                         .getValueFor<String>('language') ==
                         'en'
-                        ? controller.cities
+                        ? controllerAddress.cities
                         .firstWhere((element) =>
                     element.id == _selectedCityId)
                         .nameEn!
-                        : controller.cities
+                        : controllerAddress.cities
                         .firstWhere((element) =>
                     element.id == _selectedCityId)
                         .nameAr!),
@@ -169,7 +166,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       .toList()
                       : [];
                 },
-                items: controller.cities
+                items: controllerAddress.cities
                     .map((city) => DropdownMenuItem<int>(
                   child: Text(SharedPrefController()
                       .getValueFor<String>('language') ==
@@ -180,8 +177,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ))
                     .toList(),
                 onChanged: (int? value) {
-                  setState(() => _selectedCityId = value);
+                  setState(() => _selectedCityId = value
+                  );
                 }),
+
             // return Text('');
 
 
@@ -229,6 +228,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               onPressed: () {
 
                 _performChangeProfile();
+
                 // Navigator.pushReplacementNamed(context, '/home_screen');
               },
               style: ElevatedButton.styleFrom(
@@ -249,7 +249,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   void _performChangeProfile() {
     if (_checkData()) {
-      _register();
+      _updateProfile();
     }
   }
 
@@ -262,10 +262,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return false;
   }
 
-  void _register() async {
-    ProcessResponse processResponse =await UsersApiController().updateProfile(name: _nameTextController.text, gender: _gender, city_id: _cityTextController.text);
+  void _updateProfile() async {
+    ProcessResponse processResponse =await UsersApiController().updateProfile(name: _nameTextController.text, gender: _gender, city_id: _selectedCityId.toString());
     if(processResponse.success){
-      // Navigator.pop(context);
+      UserGetxController.to.updateUser(newName: _nameTextController.text, newCitId: _selectedCityId.toString(), newGender: _gender);
+
+      Navigator.pop(context);
 
     }
       context.showSnackBar(message: processResponse.message ,error: !processResponse.success);

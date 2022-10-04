@@ -51,6 +51,9 @@ class UsersApiController with Helpers {
     return errorResponse;
   }
 
+
+
+
   Future<ProcessResponse> logout() async {
     String token =
         SharedPrefController().getValueFor<String>(PrefKeys.token.name)!;
@@ -86,7 +89,7 @@ class UsersApiController with Helpers {
   }
 
 
-  Future<Home?> getHome() async {
+  Future<Home> getHome() async {
     var response = await http.get(Uri.parse(ApiSettings.home), headers: {
       HttpHeaders.authorizationHeader:
           SharedPrefController().getValueFor<String>(PrefKeys.token.name)!,
@@ -99,6 +102,7 @@ class UsersApiController with Helpers {
       Home home = Home.fromJson(jsonDataObject);
       return home;
     }
+    return Home();
   }
 
   Future<ProcessResponse> activate(
@@ -117,7 +121,7 @@ class UsersApiController with Helpers {
   }
 
   Future<ProcessResponse> changePassword(
-      {required int currentP_password,
+      {required int current_password,
       required int new_password,
       required int new_password_confirmation}) async {
     Uri uri = Uri.parse(ApiSettings.changepassword);
@@ -125,7 +129,7 @@ class UsersApiController with Helpers {
       HttpHeaders.authorizationHeader:
           SharedPrefController().getValueFor<String>(PrefKeys.token.name)!
     }, body: {
-      'currentP_password': currentP_password.toString(),
+      'current_password': current_password.toString(),
       'new_password': new_password.toString(),
       'new_password_confirmation': new_password_confirmation.toString(),
     });
@@ -133,7 +137,7 @@ class UsersApiController with Helpers {
       var json = jsonDecode(response.body);
       return ProcessResponse(message: json['message'], success: json['status']);
     }
-//8631
+
     return errorResponse;
   }
 

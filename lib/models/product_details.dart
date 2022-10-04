@@ -8,9 +8,9 @@ class ProductDetails{
   late String infoAr;
   late double price;
   late String quantity;
-  late double? overalRate;
+  late String overalRate;
   late String subCategoryId;
-  late double productRate;
+  late String productRate='0';
   late double? offerPrice;
   late bool isFavorite;
   late String imageUrl;
@@ -27,9 +27,9 @@ class ProductDetails{
     infoAr = json['info_ar'];
     price = double.parse(json['price'].toString());
     quantity = json['quantity'];
-    overalRate = double.parse(json['overal_rate'].toString());
+    overalRate = json['overal_rate'];
     subCategoryId = json['sub_category_id'];
-    productRate = double.parse(json['product_rate'].toString());
+    productRate = json['product_rate'].toString();
     offerPrice = json['offer_price'];
     isFavorite = json['is_favorite'];
     imageUrl = json['image_url'];

@@ -17,8 +17,8 @@ class AddressGetxController extends GetxController {
 
   void onInit() {
     // getAddresses();
-    super.onInit();
     getCities();
+    super.onInit();
   }
   Future<ProcessResponse> createAddress(String name,
       String info,

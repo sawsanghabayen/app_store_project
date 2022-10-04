@@ -159,9 +159,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Helpers 
     );
   }
 
-  void _performResetPassword() {
+  Future<void> _performResetPassword() async{
     if (_checkData()) {
-      _resetPassword();
+     await _resetPassword();
     }
   }
 
@@ -177,7 +177,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Helpers 
     return false;
   }
 
-  void _resetPassword() async {
+  Future<void> _resetPassword() async {
     print(_codeTextController.text);
     ProcessResponse processResponse = await UsersApiController().resetPassword(
         mobile: int.parse(_mobileTextController.text)
@@ -194,46 +194,4 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with Helpers 
   }
 
 
-// class ShowSuccess extends StatelessWidget {
-//   final String text;
-//   final String subText;
-//   const ShowSuccess({
-//     Key? key,
-//    required this.text,
-//    required this.subText
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return AlertDialog(
-//       // titlePadding: ,
-//       shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20)),
-//       title: Column(
-//         children:[
-//           SizedBox(height: 20.h,),
-//           Icon(Icons.check_circle ,size: 58, color:Colors.green,),
-//           SizedBox(height: 20.h,),
-//           Text(
-//           text,
-//           style: GoogleFonts.nunito( fontSize: 17, color: Color(0xFF3E3E3E), fontWeight: FontWeight.bold ,),
-//           textAlign:TextAlign.center,
-//         ),
-//           SizedBox(height: 10.h,),
-//           TextButton(
-//               onPressed: (){
-//                 Navigator.pop(context ,true);
-//                 // Navigator.pushReplacementNamed(context, '/login_screen');
-//
-//
-//               }, child: Text(subText,style: GoogleFonts.nunito(fontSize: 14, color: Color(0xFFCACACA) ,fontWeight: FontWeight.normal),)),
-//           SizedBox(height: 20.h,),
-//
-//
-//
-//         ]
-//       ),
-//
-//     );
-//   }
-// }
 }

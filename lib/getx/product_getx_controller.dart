@@ -14,6 +14,7 @@ class ProductGetxController extends GetxController {
   RxList<Product> favoriteProducts = <Product>[].obs;
   Rx<ProductDetails?> productDetails = ProductDetails().obs;
   RxBool loading = false.obs;
+  RxBool isFav = false.obs;
 
   void onInit() {
     getFavoriteProducts();
@@ -34,7 +35,6 @@ class ProductGetxController extends GetxController {
     loading.value = true;
     favoriteProducts.value = await productApiController.getFavoriteProducts();
     loading.value =false;
-    update();
   }
 
 
@@ -52,25 +52,25 @@ class ProductGetxController extends GetxController {
   }
   //
   Future<void> addFavoriteProducts({required Product product}) async {
-    update();
-    ProcessResponse processResponse = await productApiController.addFavoriteProducts(id: product.id!);
+    // update();
+    ProcessResponse processResponse = await productApiController.addFavoriteProducts(id: product.id);
     if(processResponse.success){
       int index = favoriteProducts.indexWhere((element) => element.id == product.id);
       if(index != -1) {
         favoriteProducts.removeAt(index);
-        product.isFavorite = !product.isFavorite!;
+        product.isFavorite = false;
         // favoriteProducts.refresh();
         // products.value.map((e) => null)
       } else {
         favoriteProducts.add(product);
-        product.isFavorite = !product.isFavorite!;
+        product.isFavorite = true;
       }
         favoriteProducts.refresh();
     }
 
     // productDetails.refresh();
     // favoriteProducts.refresh();
-    update();
+    // update();
   }
   //
   // Future<void> rattingProduct({required ProductDetails product,required BuildContext context,required double rate}) async {

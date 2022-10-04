@@ -1,4 +1,7 @@
+import 'package:database_app/getx/address_getx_controller.dart';
+import 'package:database_app/getx/product_getx_controller.dart';
 import 'package:database_app/models/home.dart';
+import 'package:database_app/screens/app/product_screen.dart';
 import 'package:database_app/screens/app/sub_categories_screen.dart';
 import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/app_text.dart';
@@ -16,13 +19,14 @@ import '../../prefs/shared_pref_controller.dart';
 import 'category_screen.dart';
 
 class MainScreenWidget extends StatelessWidget {
-  MainScreenWidget({Key? key}) : super(key: key);
   HomeGetxController controller = Get.put(HomeGetxController());
+  ProductGetxController productGetxController = Get.put(ProductGetxController());
 
-  // UsersGetxController usersController = Get.put(UsersGetxController());
+
+
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeGetxController>(
+    return GetX<HomeGetxController>(
       builder: (HomeGetxController controller) {
         return controller.isLoading.value
             ? Center(child: CircularProgressIndicator())
@@ -32,7 +36,7 @@ class MainScreenWidget extends StatelessWidget {
                     child: ListView(
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        HeaderPage<MySlider>(images: controller.home!.slider),
+                        HeaderPage<MySlider>(images: controller.home.value.slider),
                         SizedBox(
                           height: 30.h,
                         ),
@@ -48,11 +52,12 @@ class MainScreenWidget extends StatelessWidget {
                           height: 80.h,
                           child: ListView.builder(
                             itemBuilder: (context, index) {
-                              Categories category=controller.home!.categories[index];
+                              Categories category=controller.home.value.categories[index];
                               return InkWell(
                                 onTap: () {
-                                  Get.to(() => SubCategoriesScreen(
-                                      id: controller.home!.categories[index].id));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => SubCategoriesScreen(id:controller.home.value.categories[index].id ),));
+                                  // Get.to(() => SubCategoriesScreen(
+                                  //     id: controller.home.value.categories[index].id));
                                   // Get.to();
                                   // Navigator.pushNamed(
                                   //     context, '/sub_categories_screen');
@@ -78,7 +83,7 @@ class MainScreenWidget extends StatelessWidget {
                                 ),
                               );
                             },
-                            itemCount: controller.home!.categories.length,
+                            itemCount: controller.home.value.categories.length,
                             scrollDirection: Axis.horizontal,
                           ),
                         ),
@@ -88,7 +93,11 @@ class MainScreenWidget extends StatelessWidget {
                         _buildType(context,
                             name: context.localizations.latest_product,
                             onPress: () {
-                          Navigator.pushNamed(context, '/products_screen');
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          //
+                          //  return ProductScreen(id: controller.home.value.categories.first.id);
+                          // },));
+                          // Navigator.pushNamed(context, '/products_screen');
                         }),
                         SizedBox(
                           height: 20.h,
@@ -99,8 +108,7 @@ class MainScreenWidget extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return CustomProduct(
-                                product: controller.home!.latestProducts[index],
-
+                                product: controller.home.value.latestProducts[index],
                                 margin: EdgeInsets.only(
                                     right: SharedPrefController()
                                                 .getValueFor<String>(
@@ -116,7 +124,7 @@ class MainScreenWidget extends StatelessWidget {
                                         : 0.w),
                               );
                             },
-                            itemCount: controller.home!.latestProducts.length,
+                            itemCount: controller.home.value.latestProducts.length,
                           ),
                         ),
                         SizedBox(
@@ -134,7 +142,7 @@ class MainScreenWidget extends StatelessWidget {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return CustomProduct(
-                                product: controller.home!.famousProducts[index],
+                                product: controller.home.value.famousProducts[index],
                                 margin: EdgeInsets.only(
                                     right: SharedPrefController()
                                                 .getValueFor<String>(
@@ -150,9 +158,10 @@ class MainScreenWidget extends StatelessWidget {
                                         : 0.w),
                               );
                             },
-                            itemCount:  controller.home!.latestProducts.length,
+                            itemCount:  controller.home.value.latestProducts.length,
                           ),
                         ),
+                        SizedBox(height: 15.h,)
                       ],
                     ),
                   )

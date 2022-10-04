@@ -1,9 +1,9 @@
 import 'package:database_app/models/process_response.dart';
 import 'package:database_app/models/screens.dart';
-import 'package:database_app/screens/app/cart_screen.dart';
+import 'package:database_app/screens/app/cart/cart_screen.dart';
 import 'package:database_app/screens/app/liked_screen.dart';
 import 'package:database_app/screens/app/mainWidget.dart';
-import 'package:database_app/screens/app/setting_screen.dart';
+import 'package:database_app/screens/app/settings/setting_screen.dart';
 import 'package:database_app/utils/context_extension.dart';
 import 'package:database_app/widgets/custom_product.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     List<Screens> screens = [
       Screens(widget: MainScreenWidget(), title: context.localizations.home),
       Screens(widget: CartScreen(), title: context.localizations.cart),
